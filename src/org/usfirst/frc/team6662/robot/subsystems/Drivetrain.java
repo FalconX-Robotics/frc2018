@@ -5,12 +5,14 @@ import org.usfirst.frc.team6662.robot.Robot;
 import org.usfirst.frc.team6662.robot.RobotMap;
 import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Drivetrain extends Subsystem {
 	public static final boolean HIGH_GEAR = true;
@@ -29,6 +31,8 @@ public class Drivetrain extends Subsystem {
 	private Compressor compressor = new Compressor();
 	private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD_PORT, 
 			RobotMap.SHIFTER_REVERSE_PORT);
+	
+	private Gyro gyro = new ADXRS450_Gyro();
 	
 	private boolean shiftState = LOW_GEAR;
 	
@@ -58,6 +62,10 @@ public class Drivetrain extends Subsystem {
 	public void shiftToLowGear() {
 		shifter.set(DoubleSolenoid.Value.kReverse);
 		shiftState = LOW_GEAR;
+	}
+	
+	public Gyro getGyro() {
+		return gyro;
 	}
 
 	@Override
