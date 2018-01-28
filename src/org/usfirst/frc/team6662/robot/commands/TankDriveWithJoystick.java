@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TankDriveWithJoystick extends Command {
 	private Joystick joystick;
-	private int leftSpeedAxis;
-	private int rightSpeedAxis;
+	private int leftSpeedAxis = 0;
+	private int rightSpeedAxis = 1;
 	
 	public TankDriveWithJoystick(Joystick joystick, int leftSpeedAxis, int rightSpeedAxis) {
 		super("Tank Drive with Joystick");
