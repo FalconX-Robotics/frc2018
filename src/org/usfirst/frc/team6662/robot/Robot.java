@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6662.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -20,6 +21,40 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drivetrain = new Drivetrain();
 		oi = new OI();
+	}
+	
+	@Override
+	public void autonomousInit() {
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		char allianceSwitch = gameData.charAt(0);
+		char scale = gameData.charAt(1);
+		char opponentSwitch = gameData.charAt(2);
+		
+		if (allianceSwitch == 'L') {
+			
+		}
+		else if (allianceSwitch == 'R') {
+			
+		}
+		
+		if (scale == 'L') {
+			
+		}
+		else if (scale == 'R') {
+			
+		}
+		
+		if (opponentSwitch == 'L') {
+			
+		}
+		else if (opponentSwitch == 'R') {
+			
+		}
+	}
+	
+	@Override
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
 	}
 	
 	@Override
