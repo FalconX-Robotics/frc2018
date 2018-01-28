@@ -18,8 +18,8 @@ public class TurnAngle extends Command {
 		
 		this.targetAngle = targetAngle;
 		
-		leftSpeed = targetAngle >= 0 ? speed : -speed;
-		rightSpeed = targetAngle >= 0 ? -speed : speed;
+		leftSpeed = Math.copySign(speed, targetAngle);
+		rightSpeed = -leftSpeed;
 	}
 	
 	protected void initalize() {
