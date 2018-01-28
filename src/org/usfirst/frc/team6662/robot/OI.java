@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team6662.robot;
 
-import org.usfirst.frc.team6662.robot.commands.ShiftGear;
+import org.usfirst.frc.team6662.robot.commands.ToggleGear;
 import org.usfirst.frc.team6662.robot.commands.TurnLeft;
 import org.usfirst.frc.team6662.robot.commands.TurnRight;
 
@@ -35,7 +35,7 @@ public class OI {
 			TURN_RIGHT_BUTTON_NUMBER);
 	
 	public OI() {
-		shifterButton.whenPressed(new ShiftGear());
+		shifterButton.whenPressed(new ToggleGear());
 		turnLeftButton.whenPressed(new TurnLeft());
 		turnRightButton.whenPressed(new TurnRight());
 	}

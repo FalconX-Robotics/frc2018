@@ -4,15 +4,15 @@ import org.usfirst.frc.team6662.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ShiftGear extends Command {
-	public ShiftGear() {
-		super("Shift Gear");
+public class ToggleGear extends Command {
+	public ToggleGear() {
+		super("Toggle Gear");
 		requires(Robot.drivetrain);
 	}
 	
 	@Override
 	protected void execute() {
-		Robot.drivetrain.shiftGear();
+		Robot.drivetrain.toggleGear();
 	}
 
 	@Override

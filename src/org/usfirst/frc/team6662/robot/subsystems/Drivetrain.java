@@ -45,7 +45,7 @@ public class Drivetrain extends Subsystem {
 		drivetrain.tankDrive(leftSpeed, rightSpeed);
 	}
 	
-	public void shiftGear() {
+	public void toggleGear() {
 		if (shiftState == LOW_GEAR) {
 			shiftToHighGear();
 		}
