@@ -8,6 +8,7 @@ import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -32,20 +33,35 @@ public class Drivetrain extends Subsystem {
 	private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD_PORT, 
 			RobotMap.SHIFTER_REVERSE_PORT);
 	
-	private Gyro gyro = new ADXRS450_Gyro();
-	
+	private Encoder leftEncoder = new Encoder(RobotMap.ENCODER_INPUT_LEFT_A, RobotMap.ENCODER_INPUT_LEFT_B);
+	private Encoder rightEncoder = new Encoder(RobotMap.ENCODER_INPUT_RIGHT_A, RobotMap.ENCODER_INPUT_RIGHT_B);
+	  
 	private boolean shiftState = LOW_GEAR;
+	
+	private Gyro gyroscope = new ADXRS450_Gyro();
 	
 	public Drivetrain() {
 		super("Drivetrain");
 		compressor.setClosedLoopControl(true);
 	}
 	
+	public Gyro getGyro() {
+		return gyroscope;
+	}
+	
+	public Encoder getLeftEncoder() {
+		return leftEncoder;
+	}
+	
+	public Encoder getRightEncoder() {
+		return rightEncoder;
+	}
+	
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		drivetrain.tankDrive(leftSpeed, rightSpeed);
 	}
 	
-	public void toggleGear() {
+	public void shiftGear() {
 		if (shiftState == LOW_GEAR) {
 			shiftToHighGear();
 		}
@@ -62,10 +78,6 @@ public class Drivetrain extends Subsystem {
 	public void shiftToLowGear() {
 		shifter.set(DoubleSolenoid.Value.kReverse);
 		shiftState = LOW_GEAR;
-	}
-	
-	public Gyro getGyro() {
-		return gyro;
 	}
 
 	@Override
