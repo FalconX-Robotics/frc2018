@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team6662.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
+
 public class RobotMap {
 	public static final int FRONT_LEFT_MOTOR = 0;
 	public static final int REAR_LEFT_MOTOR = 1;
@@ -15,4 +17,10 @@ public class RobotMap {
 	
 	public static final int SHIFTER_FORWARD_PORT = 0;
 	public static final int SHIFTER_REVERSE_PORT = 1;
+	
+	public static final int ENCODER_INPUT_LEFT_B = 1;
+	public static final int ENCODER_INPUT_LEFT_A = 0;
+	public static final int ENCODER_INPUT_RIGHT_A = 2;
+	public static final int ENCODER_INPUT_RIGHT_B = 3;
+	
 }
