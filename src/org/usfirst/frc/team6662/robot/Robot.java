@@ -17,6 +17,8 @@ public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static OI oi;
 	
+	Command testAutoCommand;
+	
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -43,7 +45,8 @@ public class Robot extends TimedRobot {
 		final int RightScaleDistancesPosC [] = {3,5,6};
 		
 		final Command leftSide [] = {new TurnRight(), new TurnLeft(), new TurnRight()};
-		final Command rightRide [] = {new TurnLeft(), new TurnRight(), new TurnLeft()};
+		final Command rightSide [] = {new TurnLeft(), new TurnRight(), new TurnLeft()};
+		
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		char allianceSwitch = gameData.charAt(0);
 		char scale = gameData.charAt(1);
