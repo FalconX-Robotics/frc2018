@@ -9,8 +9,12 @@ package org.usfirst.frc.team6662.robot;
 //test : Please feel free to remove.
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import org.usfirst.frc.team6662.robot.commands.TestAutoCommand;
+import org.usfirst.frc.team6662.robot.commands.TurnLeft;
+import org.usfirst.frc.team6662.robot.commands.TurnRight;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {

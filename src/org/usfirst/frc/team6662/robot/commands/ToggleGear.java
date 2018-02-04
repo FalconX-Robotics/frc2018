@@ -12,7 +12,7 @@ public class ToggleGear extends Command {
 	
 	@Override
 	protected void execute() {
-		Robot.drivetrain.shiftGear();
+		Robot.drivetrain.toggleGear();
 	}
 
 	@Override
