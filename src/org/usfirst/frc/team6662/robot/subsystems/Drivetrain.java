@@ -4,9 +4,6 @@ import org.usfirst.frc.team6662.robot.OI;
 import org.usfirst.frc.team6662.robot.Robot;
 import org.usfirst.frc.team6662.robot.RobotMap;
 import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
-
-import com.ctre.phoenix.sensors.PigeonIMU;
-
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -46,21 +43,9 @@ public class Drivetrain extends Subsystem {
 	
 	private Gyro gyroscope = new ADXRS450_Gyro();
 	
-	private PigeonIMU pigeon = new PigeonIMU(RobotMap.PIGEON_PORT);
-	
-	public PigeonIMU getPigeon() {
-		return pigeon;
-	}
-	
 	public double getAngle() {
 		return gyroscope.getAngle();
 	}
-	
-	//stuff for the robot position mapping (optional)
-	private double positionxy [] = {0,0};
-	private double changeinxy [] = {0,0};
-	private double errorxy [] = {0,0};
-	
 	
 	public Gyro getGyro() {
 		return gyroscope;

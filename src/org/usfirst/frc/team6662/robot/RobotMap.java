@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team6662.robot;
 
+
 public class RobotMap {
 	public static final int FRONT_LEFT_MOTOR = 0;
 	public static final int REAR_LEFT_MOTOR = 1;
@@ -26,7 +27,4 @@ public class RobotMap {
 	
 	public static final boolean ROBOT_POSITION_X_AXIS = false;
 	public static final boolean ROBOT_POSITION_Y_AXIS = true;
-	
-	
-	
 }

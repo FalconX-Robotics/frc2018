@@ -16,19 +16,16 @@ import org.usfirst.frc.team6662.robot.commands.TestAutoCommand;
 import org.usfirst.frc.team6662.robot.commands.TurnLeft;
 import org.usfirst.frc.team6662.robot.commands.TurnRight;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team6662.robot.subsystems.RobotPosition;
 
 public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static OI oi;
-	public static RobotPosition robotPosition;
 	Command testAutoCommand;
 	
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
 		oi = new OI();
-		robotPosition = new RobotPosition();
 	}
 	
 	@Override
