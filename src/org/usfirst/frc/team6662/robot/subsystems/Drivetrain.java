@@ -5,6 +5,8 @@ import org.usfirst.frc.team6662.robot.Robot;
 import org.usfirst.frc.team6662.robot.RobotMap;
 import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -14,8 +16,12 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
-//test 
+
 public class Drivetrain extends Subsystem {
+	public Drivetrain() {
+		super("Drivetrain");
+		compressor.setClosedLoopControl(true);
+	}
 	public static final boolean HIGH_GEAR = true;
 	public static final boolean LOW_GEAR = false;
 	
@@ -40,10 +46,21 @@ public class Drivetrain extends Subsystem {
 	
 	private Gyro gyroscope = new ADXRS450_Gyro();
 	
-	public Drivetrain() {
-		super("Drivetrain");
-		compressor.setClosedLoopControl(true);
+	private PigeonIMU pigeon = new PigeonIMU(RobotMap.PIGEON_PORT);
+	
+	public PigeonIMU getPigeon() {
+		return pigeon;
 	}
+	
+	public double getAngle() {
+		return gyroscope.getAngle();
+	}
+	
+	//stuff for the robot position mapping (optional)
+	private double positionxy [] = {0,0};
+	private double changeinxy [] = {0,0};
+	private double errorxy [] = {0,0};
+	
 	
 	public Gyro getGyro() {
 		return gyroscope;

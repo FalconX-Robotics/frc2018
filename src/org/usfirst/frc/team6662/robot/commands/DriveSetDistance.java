@@ -9,9 +9,9 @@ public class DriveSetDistance extends Command {
 
 	private Encoder leftEncoder = Robot.drivetrain.getLeftEncoder();
 	private Encoder rightEncoder = Robot.drivetrain.getRightEncoder();
-	private int distance = 0;
+	private double distance = 0.0;
 	
-    public DriveSetDistance(int distance) {
+    public DriveSetDistance(double distance) {
        requires(Robot.drivetrain);
        this.distance = distance;
     }

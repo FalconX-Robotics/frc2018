@@ -20,8 +20,13 @@ public class RobotMap {
 	public static final int ENCODER_INPUT_LEFT_A = 0;
 	public static final int ENCODER_INPUT_RIGHT_A = 2;
 	public static final int ENCODER_INPUT_RIGHT_B = 3;
-	public static final int ELEVATOR_MOTOR = 0;
 	public static final int ELEVATOR_ENCODER_A = 0;
 	public static final int ELEVATOR_ENCODER_B = 0;
+	public static final int ELEVATOR_MOTOR_NODE = 0;
+	
+	public static final boolean ROBOT_POSITION_X_AXIS = false;
+	public static final boolean ROBOT_POSITION_Y_AXIS = true;
+	
+	
 	
 }
