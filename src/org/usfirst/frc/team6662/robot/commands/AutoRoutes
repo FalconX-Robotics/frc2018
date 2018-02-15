@@ -17,8 +17,6 @@ public class AutoRoutes extends CommandGroup {
     	int adjacent = AutoRoutes.getAdjacent(position);
     	double firstAngle = AutoRoutes.getFirstAngle(adjacent);
     	
-    	AutoRoutes.getAdjacent('b');
-    	
     	addSequential(new DriveSetDistance(initialDriveForward));
     	addSequential(new TurnAngle(firstAngle, 0.7));
     	addSequential(new DriveSetDistance(AutoRoutes.getFirstDistance(adjacent)));
