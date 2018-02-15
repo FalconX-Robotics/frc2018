@@ -1,0 +1,75 @@
+package org.usfirst.frc.team6662.robot.commands;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
+public class AutoRoutes extends CommandGroup {
+	
+	private static final int wallToSwitch = 101;//actual distance is 101.25 inches
+	private static final int wallToScale = 1; //these distances are undetermined
+	private static final int switchToSide = 1;
+	private static final int scaleToSide = 1;
+	private static final int initialDriveForward = 30;
+	
+	private static int distance;
+
+    public AutoRoutes(char position, boolean Scale) {
+    	
+    	int adjacent = AutoRoutes.getAdjacent(position);
+    	double firstAngle = AutoRoutes.getFirstAngle(adjacent);
+    	
+    	AutoRoutes.getAdjacent('b');
+    	
+    	addSequential(new DriveSetDistance(initialDriveForward));
+    	addSequential(new TurnAngle(firstAngle, 0.7));
+    	addSequential(new DriveSetDistance(AutoRoutes.getFirstDistance(adjacent)));
+    	
+    	if (Scale == true){
+    		addSequential(new TurnAngle(AutoRoutes.getSecondAngleForScale(firstAngle), 0.7));
+    		addSequential(new DriveSetDistance(AutoRoutes.getSecondDistanceForScale()));
+    		addSequential(new TurnAngle(AutoRoutes.getThirdAngle(), 0.7));
+    		addSequential(new DriveSetDistance(scaleToSide));
+    	}
+    	
+    	else {
+    		addSequential(new TurnAngle(AutoRoutes.getSecondAngleForSwitch(firstAngle), 0.7));
+    		addSequential(new DriveSetDistance(switchToSide));
+    		}
+    }
+    
+    public static int getFirstDistance(int angle){
+    	return (int) Math.sqrt(Math.pow(angle, 2) + Math.pow(wallToSwitch - initialDriveForward, 2));
+    }
+    
+    public static int getSecondDistanceForScale(){
+    	return wallToScale - wallToSwitch - initialDriveForward;
+    }
+    
+    public static int getAdjacent(char position){
+    	
+    	if(position == 'a'){
+    		distance = 1;}//distances are undetermined
+    	else if(position == 'b'){
+    		distance = 1;}
+    	else if(position == 'c'){
+    		distance = 1;}
+    	return distance;
+    	
+    	}
+    
+    public static double getFirstAngle(int adjacent){
+    	return Math.atan((wallToSwitch-initialDriveForward)/adjacent);
+    }
+    
+    public static double getSecondAngleForScale(double angle){
+    	return -1*(90 - angle);
+    }
+    
+    public static double getSecondAngleForSwitch(double angle){
+    	return -1*(90 + angle);
+    }
+    
+    public static int getThirdAngle(){
+    	return -90;
+    }
+}
+   
