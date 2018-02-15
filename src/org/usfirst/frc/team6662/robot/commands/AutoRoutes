@@ -60,7 +60,7 @@ public class AutoRoutes extends CommandGroup {
     }
     
     public static double getSecondAngleForScale(double angle){
-    	return -1*(90 - angle);
+    	return -angle;
     }
     
     public static double getSecondAngleForSwitch(double angle){
