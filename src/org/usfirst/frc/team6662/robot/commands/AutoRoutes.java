@@ -26,24 +26,25 @@ public class AutoRoutes extends CommandGroup {
     			addSequential(new TurnAngle(AutoRoutes.getSecondAngleForScale(firstAngle), 0.7));//make parallel to wall
     			addSequential(new DriveForward(AutoRoutes.getSecondDistanceForScale(), 0.7));//drive along wall until scale
     			addSequential(new TurnAngle(AutoRoutes.getThirdAngle(), 0.7));//make aligned with scale
-    			addSequential(new DriveForward(scaleToSide), 0.7);//robot approaches from null territory
+    			addSequential(new DriveForward(scaleToSide, 0.7));//robot approaches from null territory
 		}
 		else {
 			addSequential(new TurnAngle(AutoRoutes.getSecondAngleForScale(-1*firstAngle), 0.7));//make parallel to wall
     			addSequential(new DriveForward(AutoRoutes.getSecondDistanceForScale(), 0.7));//drive along wall until scale
     			addSequential(new TurnAngle(-1*AutoRoutes.getThirdAngle(), 0.7));//make aligned with scale
-    			addSequential(new DriveForward(scaleToSide), 0.7);//robot approaches from null territory
+    			addSequential(new DriveForward(scaleToSide, 0.7));//robot approaches from null territory
 		}
     	}
     	else {
 		if (SwitchSide == 'R'){
     			addSequential(new TurnAngle(AutoRoutes.getSecondAngleForSwitch(firstAngle), 0.7));//align with switch
-    			addSequential(new DriveForward(switchToSide), 0.7);approach switch from the right
+    			addSequential(new DriveForward(switchToSide, 0.7));//approach switch from the right
 		}
 		else {
-			addSequential(new TurnAngle(-1*Routes.getSecondAngleForSwitch(firstAngle), 0.7));//align with switch
-    			addSequential(new DriveForward(switchToSide), 0.7);approach switch from the right
+			addSequential(new TurnAngle(-1*AutoRoutes.getSecondAngleForSwitch(firstAngle), 0.7));//align with switch
+    			addSequential(new DriveForward(switchToSide, 0.7));//approach switch from the right
     		}
+    	}
     }
     
     public static double getFirstDistance(double angle){
