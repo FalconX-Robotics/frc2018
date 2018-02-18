@@ -11,17 +11,23 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
-import org.usfirst.frc.team6662.robot.commands.TestAutoCommand;
-import org.usfirst.frc.team6662.robot.commands.TurnLeft;
-import org.usfirst.frc.team6662.robot.commands.TurnRight;
+import org.usfirst.frc.team6662.robot.commands.AutoDrive;
+import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static OI oi;
-	Command testAutoCommand;
+	Command autoDrive;
+	Command tankDriveWithJoystick;
 	
+	char allianceSwitch;
+	char scale;
+	char opponentSwitch;
+	
+	double opp = 0.0;
+	double position = 0.0;
+	String element = "scale";
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -31,61 +37,23 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		
-			final int leftSwitchDistancesPosA [] = {10,6,7};
-		final int leftSwitchDistancesPosB [] = {2,4,5};
-		final int leftSwitchDistancesPosC [] = {2,4,5};
-		
-		final int rightSwitchDistancesPosA [] = {2,3,4};
-		final int rightSwitchDistancesPosB [] = {5,6,7};
-		final int rightSwitchDistancesPosC [] = {9,5,3};
-		
-		final int leftScaleDistancesPosA [] = {2,3,4};
-		final int leftScaleDistancesPosB [] = {32,13};
-		final int leftScaleDistancesPosC [] = {3,5,8};
-		
-		final int rightScaleDistancesPosA [] = {8,4,9};
-		final int rightScaleDistancesPosB [] = {6,3,6};
-		final int RightScaleDistancesPosC [] = {3,5,6};
-		
-		final Command leftSide [] = {new TurnRight(), new TurnLeft(), new TurnRight()};
-		final Command rightSide [] = {new TurnLeft(), new TurnRight(), new TurnLeft()};
-		
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		char allianceSwitch = gameData.charAt(0);
-		char scale = gameData.charAt(1);
-		char opponentSwitch = gameData.charAt(2);
+		allianceSwitch = gameData.charAt(0);
+		scale = gameData.charAt(1);
+		opponentSwitch = gameData.charAt(2);
 		
-		if (allianceSwitch == 'L') {
-			testAutoCommand = new TestAutoCommand(leftSwitchDistancesPosA, leftSide);
-		testAutoCommand.start();
-			
-		}
-		else if (allianceSwitch == 'R') {
-			testAutoCommand = new TestAutoCommand(rightSwitchDistancesPosA, rightSide);
-		testAutoCommand.start();
-		}
+		autoDrive = new AutoDrive(opp, position, element, scale);//change last parameter to your will
+		autoDrive.start();
 		
-		if (scale == 'L') {
-			testAutoCommand = new TestAutoCommand(leftScaleDistancesPosA, leftSide);
-		testAutoCommand.start();
-			
-		}
-		else if (scale == 'R') {
-			testAutoCommand = new TestAutoCommand(rightScaleDistancesPosA, rightSide);
-		testAutoCommand.start();
-		}
-		
-		if (opponentSwitch == 'L') {
-			
-		}
-		else if (opponentSwitch == 'R') {
-			
-		}
 	}
-	
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+	}
+	
+	@Override
+	public void teleopInit() {
+		tankDriveWithJoystick = new TankDriveWithJoystick(oi.getJoystick(), 1, 5);
 	}
 	
 	@Override

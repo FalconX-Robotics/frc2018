@@ -60,5 +60,6 @@ public class AutoDrive extends CommandGroup {
 		addSequential(new DriveForward(distanceToElement, 1));
 		addSequential(new TurnAngle(modTurns(turnC, side), 0.5));
 		addSequential(new DriveForward(distanceFromOppToElement, 1));
+	
 	}
 }

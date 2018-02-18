@@ -17,14 +17,13 @@ public class RobotMap {
 	public static final int SHIFTER_FORWARD_PORT = 0;
 	public static final int SHIFTER_REVERSE_PORT = 1;
 	
-	public static final int ENCODER_INPUT_LEFT_B = 1;
-	public static final int ENCODER_INPUT_LEFT_A = 0;
-	public static final int ENCODER_INPUT_RIGHT_A = 2;
-	public static final int ENCODER_INPUT_RIGHT_B = 3;
-	public static final int ELEVATOR_ENCODER_A = 0;
-	public static final int ELEVATOR_ENCODER_B = 0;
-	public static final int ELEVATOR_MOTOR_NODE = 0;
+	public static final int ELEVATOR_MOTOR_ID = 4;
+	
+	public static final char left = 'L';
+	public static final char right = 'R';
 	
 	public static final boolean ROBOT_POSITION_X_AXIS = false;
 	public static final boolean ROBOT_POSITION_Y_AXIS = true;
+	public static final int ROLLEY_GRABBER_LEFT = 5;
+	public static final int ROLLEY_GRABBER_RIGHT = 6;
 }
