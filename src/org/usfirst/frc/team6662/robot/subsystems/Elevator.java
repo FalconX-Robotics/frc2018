@@ -10,19 +10,25 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
 
-	WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
+	private WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
 	
 	private double MAX_SPEED =  79.0;  // in./sec,  output of gearbox
 	private double SPROCKET_DIAMETER = 1.9; //inches
 	private double peakOutputForward = 1.;
 	private double peakOutputReverse = -1.;
 	
+	private Elevator elevator = new Elevator();
+	public Elevator getElevator() {
+		return elevator;
+	}
 	
 	private static final int PID_LoopNum = 0;
+	/*
 	private static final double PID_F_SETTING = 0;
 	private static final double PID_P_SETTING = 50.0;
 	private static final double PID_I_SETTING = 0.005;
 	private static final double PID_D_SETTING = 0;
+	*/
 	private static final int timeoutMS = 10;
 
 	//Max Morehead님, 읽고있으면, 꼭 알려줘고싶었어요: 너무 감사함니다!
@@ -43,25 +49,27 @@ public class Elevator extends Subsystem {
 	    double talonSpeed = 4096. / 10. * sprocketRotationsPerSecond;
 	    return talonSpeed;
 	}
-	public void moveUp(){
-		
+	public void moveUp(double position){
+		elevator.moveAtJoystickPosition(Math.abs(position));
 	}
 	
-	public void moveDown(){
-		
+	public void moveDown(double position){
+		elevator.moveAtJoystickPosition(position *-1.0);
 	}
 	
     public void initDefaultCommand() {
-      
+    		
     }
     public Elevator() {
     		elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PID_LoopNum, timeoutMS);
 		elevatorMotor.setSensorPhase(true);
+		/* The PID(F) value can easily be set up using the Web Configuration
 		elevatorMotor.configAllowableClosedloopError(0,PID_LoopNum, timeoutMS);
 		elevatorMotor.config_kF(PID_LoopNum, PID_F_SETTING, timeoutMS);
 		elevatorMotor.config_kP(PID_LoopNum, PID_P_SETTING, timeoutMS);
 		elevatorMotor.config_kI(PID_LoopNum, PID_I_SETTING, timeoutMS);
 		elevatorMotor.config_kD(PID_LoopNum, PID_D_SETTING, timeoutMS);
+		*/
 		elevatorMotor.configNominalOutputForward(0, timeoutMS);
 		elevatorMotor.configNominalOutputReverse(0, timeoutMS);
 		elevatorMotor.configPeakOutputForward(peakOutputForward, timeoutMS);
