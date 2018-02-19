@@ -14,6 +14,9 @@ public class Elevator extends Subsystem {
 	
 	private double MAX_SPEED =  79.0;  // in./sec,  output of gearbox
 	private double SPROCKET_DIAMETER = 1.9; //inches
+	private double peakOutputForward = 1.;
+	private double peakOutputReverse = -1.;
+	
 	
 	private static final int PID_LoopNum = 0;
 	private static final double PID_F_SETTING = 0;
@@ -21,7 +24,8 @@ public class Elevator extends Subsystem {
 	private static final double PID_I_SETTING = 0.005;
 	private static final double PID_D_SETTING = 0;
 	private static final int timeoutMS = 10;
-	
+
+	//Max Morehead님, 읽고있으면, 꼭 알려줘고싶었어요: 너무 감사함니다!
 	public void moveAtJoystickPosition(double position) {
 		moveAtSpeed(position * MAX_SPEED);
 	}
@@ -60,7 +64,7 @@ public class Elevator extends Subsystem {
 		elevatorMotor.config_kD(PID_LoopNum, PID_D_SETTING, timeoutMS);
 		elevatorMotor.configNominalOutputForward(0, timeoutMS);
 		elevatorMotor.configNominalOutputReverse(0, timeoutMS);
-		elevatorMotor.configPeakOutputForward(MAX_SPEED, timeoutMS);
-		elevatorMotor.configPeakOutputReverse(MAX_SPEED*-1, timeoutMS);
+		elevatorMotor.configPeakOutputForward(peakOutputForward, timeoutMS);
+		elevatorMotor.configPeakOutputReverse(peakOutputReverse, timeoutMS);
     }
 }
