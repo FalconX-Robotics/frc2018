@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 //import edu.wpi.first.wpilibj.Encoder;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -32,7 +33,7 @@ public class Drivetrain extends Subsystem {
 	public static final int LEFT_PEAK_OUTPUT_REVERSE = 1;
 	public static final int RIGHT_PEAK_OUTPUT_REVERSE = 1;
 	
-	public static final int DEFAULT_TIMEOUT = 1; //안녕하세요! 잘있으시죠? 방갑습니다!
+	public static final int DEFAULT_TIMEOUT = 10; //안녕하세요! 잘있으시죠? 방갑습니다!
 	
 	private WPI_TalonSRX frontLeft = new WPI_TalonSRX(RobotMap.FRONT_LEFT_MOTOR);
 	private WPI_TalonSRX rearLeft = new WPI_TalonSRX(RobotMap.REAR_LEFT_MOTOR);
@@ -43,6 +44,7 @@ public class Drivetrain extends Subsystem {
 	private Compressor compressor = new Compressor();
 	private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD_PORT, 
 			RobotMap.SHIFTER_REVERSE_PORT);
+	private PigeonIMU pigeon = new PigeonIMU(frontLeft);
 	/*
 	private Encoder leftEncoder = new Encoder(RobotMap.ENCODER_INPUT_LEFT_A, RobotMap.ENCODER_INPUT_LEFT_B);
 	private Encoder rightEncoder = new Encoder(RobotMap.ENCODER_INPUT_RIGHT_A, RobotMap.ENCODER_INPUT_RIGHT_B);
@@ -146,6 +148,8 @@ public class Drivetrain extends Subsystem {
 		frontRight.config_kI(constI, Ival, timeoutMs);
 		frontRight.config_kD(constD, Dval, timeoutMs);
 		frontRight.config_kF(constK, Kval, timeoutMs);
+		
+		pigeon.addFusedHeading(0.0, timeoutMs);
 		
 	}
 	public void tankDrive(double leftSpeed, double rightSpeed) {
