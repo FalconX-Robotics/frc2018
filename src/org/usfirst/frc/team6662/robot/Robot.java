@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
 	double opp = 0.0;
 	double position = 0.0;
 	String element = "scale";
-	String gameData = null;
+	String gameData = "";
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 
-		while (gameData == null){
+		while (gameData == ""){
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		}
 		char allianceSwitch = gameData.charAt(0);
