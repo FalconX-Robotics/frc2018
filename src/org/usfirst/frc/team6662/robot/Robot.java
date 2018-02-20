@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
 	double opp = 0.0;
 	double position = 0.0;
 	String element = "scale";
+	String gameData = null;
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -36,16 +37,15 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void autonomousInit() {
-		
-		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-		allianceSwitch = gameData.charAt(0);
-		scale = gameData.charAt(1);
-		opponentSwitch = gameData.charAt(2);
-		
-		autoDrive = new AutoDrive(opp, position, element, scale);//change last parameter to your will
-		autoDrive.start();
-		
+
+		while (gameData == null){
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+		char allianceSwitch = gameData.charAt(0);
+		char scale = gameData.charAt(1);
+		char opponentSwitch = gameData.charAt(2);	
 	}
+	
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
