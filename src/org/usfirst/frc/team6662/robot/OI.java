@@ -16,7 +16,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class OI {
-	public static final int JOYSTICK_PORT = 0;
+	public static final int XBOX_PORT = 0;
+	public static final int FAKE_XBOX_PORT = 1;
 	
 	public static final int LEFT_Y_AXIS = 1;
 	public static final int RIGHT_Y_AXIS = 5;
@@ -25,13 +26,14 @@ public class OI {
 	public static final int TURN_LEFT_BUTTON_NUMBER = 5; // Xbox left shoulder
 	public static final int TURN_RIGHT_BUTTON_NUMBER = 6; // Xbox right shoulder
 	
-	private Joystick joystick = new Joystick(JOYSTICK_PORT);
+	private Joystick XBoxJoystick = new Joystick(XBOX_PORT);
+	private Joystick FakeXBoxJoystick = new Joystick(FAKE_XBOX_PORT);
 	
-	private Button shifterButton = new JoystickButton(joystick, 
+	private Button shifterButton = new JoystickButton(XBoxJoystick, 
 			SHIFTER_BUTTON_NUMBER);
-	private Button turnLeftButton = new JoystickButton(joystick, 
+	private Button turnLeftButton = new JoystickButton(XBoxJoystick, 
 			TURN_LEFT_BUTTON_NUMBER);
-	private Button turnRightButton = new JoystickButton(joystick, 
+	private Button turnRightButton = new JoystickButton(XBoxJoystick, 
 			TURN_RIGHT_BUTTON_NUMBER);
 	
 	public OI() {
@@ -41,6 +43,6 @@ public class OI {
 	}
 	
 	public Joystick getJoystick() {
-		return joystick;
+		return XBoxJoystick;
 	}
 }

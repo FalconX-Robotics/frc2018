@@ -14,10 +14,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import org.usfirst.frc.team6662.robot.commands.AutoDrive;
 import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team6662.robot.subsystems.Elevator;
 
 public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
 	public static OI oi;
+	public static Elevator elevator;
 	Command autoDrive;
 	Command tankDriveWithJoystick;
 	
@@ -32,6 +34,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		drivetrain = new Drivetrain();
 		oi = new OI();
+		elevator = new Elevator();
 	}
 	
 	@Override
@@ -54,6 +57,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		tankDriveWithJoystick = new TankDriveWithJoystick(oi.getJoystick(), 1, 5);
+		
 	}
 	
 	@Override

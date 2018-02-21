@@ -7,7 +7,7 @@ public class AutoDrive extends CommandGroup {
 	
 	private double initDistance = 2.5;
 	private double distanceToInitElementPosition = 0.0; //calculated
-	private double distanceToElement = 0.0;//perpendicular distance from alliance wall edge to switch
+	private double distanceToElement = 0.0;//perpendicular distance from alliance wall edge to element
 	private double distanceFromOppToElement = 0.0;//distance to drive from driving the wall to the game element
 	private double turnA = 0.0;//turn on point A (start of distanceA)
 	private double turnC = 90.0;//turn to point C(end of distanceB)
