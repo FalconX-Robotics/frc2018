@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import org.usfirst.frc.team6662.robot.commands.AutoDrive;
 import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team6662.robot.subsystems.Elevator;
