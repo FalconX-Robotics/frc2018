@@ -9,6 +9,8 @@ public class DriveDistance extends Command {
 	private double targetRotations = 0;
 	private double targetPosition = 0;
 	
+	// TO-DO: Test out behavior when lines commented out below are un-commented
+	
 	//private boolean firstExecution = true;
 	
 	public DriveDistance(double targetDistance) {
