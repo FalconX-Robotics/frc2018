@@ -174,7 +174,12 @@ public class Drivetrain extends Subsystem {
 	public double getCurrentPosition() {
 		double frontLeftPosition = frontLeft.getSelectedSensorPosition(DEFAULT_TIMEOUT);
 		double frontRightPosition = frontRight.getSelectedSensorPosition(DEFAULT_TIMEOUT);
-		double averagePosition = (frontLeftPosition + frontRightPosition) / 2;
+		double averagePosition = (frontLeftPosition + -1 * frontRightPosition) / 2;
+		
+		/* TO-DO: One side increases in the negative direction while the other
+		does so in the positive direction as the robot moves forward. I assumed this
+		side was the right side, but I could be wrong. A miscalcualtion here can be
+		bad for obvious mathematical reasons; please check this thoroughly. */
 		
 		return averagePosition;
 	}
