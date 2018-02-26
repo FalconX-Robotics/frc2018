@@ -157,12 +157,10 @@ public class Drivetrain extends Subsystem {
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		drivetrain.tankDrive(leftSpeed, rightSpeed);
 		
+		// Un-comment the lines below to get encoder position readings
+		
 		//System.out.println("L:" + frontLeft.getSensorCollection().getQuadraturePosition());
 		//System.out.println("R:" + frontRight.getSensorCollection().getQuadraturePosition());
-		
-		//System.out.println("Y:" + getCurrentYaw());
-		//System.out.println("R:" + getCurrentRoll());
-		//System.out.println("P:" + getCurrentPitch());
 	}
 	
 	public void driveDistance(double targetDistance) { // inches
