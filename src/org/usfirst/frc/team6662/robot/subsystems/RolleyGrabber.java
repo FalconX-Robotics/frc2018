@@ -4,6 +4,7 @@ import org.usfirst.frc.team6662.robot.RobotMap;
 import org.usfirst.frc.team6662.robot.commands.MoveRolleyGrabberWithXbox;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -33,8 +34,8 @@ public class RolleyGrabber extends Subsystem {
 		super("Rolley Grabber");
 		
 		// Configure motor controller neutral mode
-		leftMotor.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
-		rightMotor.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
+		leftMotor.setNeutralMode(NeutralMode.Brake);
+		rightMotor.setNeutralMode(NeutralMode.Brake);
 		
 		// Invert motor controller output
 		leftMotor.setInverted(LEFT_INVERTED);

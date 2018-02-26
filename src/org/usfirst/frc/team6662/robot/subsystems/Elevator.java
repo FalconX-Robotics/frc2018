@@ -4,6 +4,7 @@ import org.usfirst.frc.team6662.robot.RobotMap;
 import org.usfirst.frc.team6662.robot.commands.MoveElevatorWithXbox;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -36,8 +37,7 @@ public class Elevator extends Subsystem {
 		super("Elevator");
 		
 		// Configure sensors
-		motor.configSelectedFeedbackSensor(
-				com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 
+		motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 
 				DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
 		
 		// Set sensor phase
