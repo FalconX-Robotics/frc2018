@@ -1,22 +1,9 @@
 package org.usfirst.frc.team6662.robot.commands;
 
-import org.usfirst.frc.team6662.robot.Robot;
+import org.usfirst.frc.team6662.robot.subsystems.Drivetrain.Gear;
 
-import edu.wpi.first.wpilibj.command.Command;
-
-public class ShiftToLowGear extends Command {
+public class ShiftToLowGear extends ShiftGear {
 	public ShiftToLowGear() {
-		super("Shift to Low Gear");
-		requires(Robot.drivetrain);
-	}
-	
-	@Override
-	protected void execute() {
-		Robot.drivetrain.shiftToLowGear();
-	}
-
-	@Override
-	protected boolean isFinished() {
-		return true;
+		super(Gear.LOW);
 	}
 }

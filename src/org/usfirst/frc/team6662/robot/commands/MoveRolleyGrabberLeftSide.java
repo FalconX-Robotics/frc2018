@@ -4,17 +4,20 @@ import org.usfirst.frc.team6662.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ToggleGear extends Command {
-	public ToggleGear() {
-		super("Toggle Gear");
-		requires(Robot.drivetrain);
+public class MoveRolleyGrabberLeftSide extends Command {
+	private double speed = 0;
+	
+	public MoveRolleyGrabberLeftSide(double speed) {
+		super("Move rolley-grabber left motor");
+		
+		this.speed = speed;
 	}
 	
 	@Override
 	protected void execute() {
-		Robot.drivetrain.toggleGear();
+		Robot.rolleyGrabber.moveLeftMotor(speed);
 	}
-
+	
 	@Override
 	protected boolean isFinished() {
 		return true;

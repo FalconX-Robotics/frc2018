@@ -4,48 +4,38 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-//test
+
 package org.usfirst.frc.team6662.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team6662.robot.subsystems.Elevator;
+import org.usfirst.frc.team6662.robot.subsystems.RolleyGrabber;
+
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
-	public static OI oi;
 	public static Elevator elevator;
-	Command autoDrive;
-	Command tankDriveWithJoystick;
+	public static RolleyGrabber rolleyGrabber;
 	
-	char allianceSwitch;
-	char scale;
-	char opponentSwitch;
+	public static OI oi;
 	
-	double opp = 0.0;
-	double position = 0.0;
-	String element = "scale";
-	String gameData = "";
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
+		elevator = new Elevator(); 
+		rolleyGrabber = new RolleyGrabber();
+		
 		oi = new OI();
-		elevator = new Elevator();
+		
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 	
 	@Override
 	public void autonomousInit() {
-
-		while (gameData == ""){
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		}
-		char allianceSwitch = gameData.charAt(0);
-		char scale = gameData.charAt(1);
-		char opponentSwitch = gameData.charAt(2);	
+		
 	}
 	
 	@Override
@@ -55,7 +45,6 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopInit() {
-		tankDriveWithJoystick = new TankDriveWithJoystick(oi.getJoystick(), 1, 5);
 		
 	}
 	

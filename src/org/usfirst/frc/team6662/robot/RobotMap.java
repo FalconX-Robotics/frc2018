@@ -6,7 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team6662.robot;
-//test
 
 public class RobotMap {
 	public static final int FRONT_LEFT_MOTOR = 0;
@@ -14,16 +13,13 @@ public class RobotMap {
 	public static final int FRONT_RIGHT_MOTOR = 2;
 	public static final int REAR_RIGHT_MOTOR = 3;
 	
-	public static final int SHIFTER_FORWARD_PORT = 0;
-	public static final int SHIFTER_REVERSE_PORT = 1;
+	/* TO-DO: Double-check the ports below and physical wiring.
+	Wasn't working before robot was bagged */
+	public static final int SHIFTER_REVERSE = 0; // Low gear
+	public static final int SHIFTER_FORWARD = 1; // High gear
 	
-	public static final int ELEVATOR_MOTOR_ID = 4;
+	public static final int ELEVATOR_MOTOR = 4;
 	
-	public static final char left = 'L';
-	public static final char right = 'R';
-	
-	public static final boolean ROBOT_POSITION_X_AXIS = false;
-	public static final boolean ROBOT_POSITION_Y_AXIS = true;
-	public static final int ROLLEY_GRABBER_LEFT = 5;
-	public static final int ROLLEY_GRABBER_RIGHT = 6;
+	public static final int ROLLEY_GRABBER_LEFT_MOTOR = 5;
+	public static final int ROLLEY_GRABBER_RIGHT_MOTOR = 6;
 }

@@ -3,37 +3,47 @@ package org.usfirst.frc.team6662.robot.commands;
 import org.usfirst.frc.team6662.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+
+/*** ANGLE REFERENCE ***
+ * 
+ * Positive (+) angle => Turn right
+ * Negative (-) angle => Turn left
+ * 
+ * NOTE: Above mapping corresponds to arcadeDrive rotation rate directions
+ */
 
 public class TurnAngle extends Command {
-	private double targetAngle = 0;
-	private double leftSpeed = 1;
-	private double rightSpeed = -1;
+	public static final double SPEED = 0;
+	public static final double ROTATION = 0.5;
 	
-	private Gyro gyro = Robot.drivetrain.getGyro();
+	private double angle = 0;
 	
-	public TurnAngle(double targetAngle, double speed) {
-		super("Turn Angle");
-		requires(Robot.drivetrain);
+	public TurnAngle(double angle) {
+		super("Turn " + (angle > 0 ? " right " : " left ") + angle + 
+				(angle == 1 ? " degree " : " degrees"));
 		
-		this.targetAngle = targetAngle;
-		
-		leftSpeed = Math.copySign(speed, targetAngle);
-		rightSpeed = -leftSpeed;
+		this.angle = angle;
 	}
 	
-	protected void initalize() {
-		gyro.reset();
+	@Override
+	protected void initialize() {
+		Robot.drivetrain.zeroYaw();
 	}
 	
 	@Override
 	protected void execute() {
-		Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
+		double rotation = Math.copySign(ROTATION, angle);
+		
+		Robot.drivetrain.arcadeDrive(SPEED, rotation);
+	}
+	
+	@Override
+	protected void end() {
+		Robot.drivetrain.zeroYaw();
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(gyro.getAngle()) >= Math.abs(targetAngle);
+		return Math.abs(Robot.drivetrain.getCurrentYaw()) >= Math.abs(angle);
 	}
-
 }
