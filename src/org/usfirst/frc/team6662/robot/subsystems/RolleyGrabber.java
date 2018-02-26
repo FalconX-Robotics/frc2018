@@ -48,7 +48,7 @@ public class RolleyGrabber extends Subsystem {
 		leftMotor.configPeakOutputReverse(LEFT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 		
 		rightMotor.configNominalOutputForward(RIGHT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		rightMotor.configNominalOutputReverse(RIGHT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOOUT);
+		rightMotor.configNominalOutputReverse(RIGHT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 		rightMotor.configPeakOutputForward(RIGHT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
 		rightMotor.configPeakOutputReverse(RIGHT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 	}
