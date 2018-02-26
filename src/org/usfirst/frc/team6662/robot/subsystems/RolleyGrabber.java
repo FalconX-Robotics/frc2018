@@ -41,18 +41,15 @@ public class RolleyGrabber extends Subsystem {
 		leftMotor.setInverted(LEFT_INVERTED);
 		rightMotor.setInverted(RIGHT_INVERTED);
 		
-		// Set nominal (minimum) outputs
+		// Set nominal (minimum) and peak (maximum) outputs
 		leftMotor.configNominalOutputForward(LEFT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		rightMotor.configNominalOutputForward(RIGHT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		
 		leftMotor.configNominalOutputReverse(LEFT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
-		rightMotor.configNominalOutputReverse(RIGHT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
-
-		// Set peak (maximum) outputs
 		leftMotor.configPeakOutputForward(LEFT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		rightMotor.configPeakOutputForward(RIGHT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		
 		leftMotor.configPeakOutputReverse(LEFT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
+		
+		rightMotor.configNominalOutputForward(RIGHT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
+		rightMotor.configNominalOutputReverse(RIGHT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOOUT);
+		rightMotor.configPeakOutputForward(RIGHT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
 		rightMotor.configPeakOutputReverse(RIGHT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 	}
 	
