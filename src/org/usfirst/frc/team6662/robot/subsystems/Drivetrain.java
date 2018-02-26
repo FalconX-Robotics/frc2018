@@ -1,173 +1,256 @@
 package org.usfirst.frc.team6662.robot.subsystems;
 
-import org.usfirst.frc.team6662.robot.OI;
-import org.usfirst.frc.team6662.robot.Robot;
 import org.usfirst.frc.team6662.robot.RobotMap;
-import org.usfirst.frc.team6662.robot.commands.TankDriveWithJoystick;
+import org.usfirst.frc.team6662.robot.commands.TankDriveWithXbox;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-//import edu.wpi.first.wpilibj.Encoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivetrain extends Subsystem {
+	public static final int DEFAULT_PID_IDX = 0;
+	public static final int DEFAULT_TIMEOUT = 0;
 	
-	public static final boolean HIGH_GEAR = true;
-	public static final boolean LOW_GEAR = false;
-	private static final double Pval = 0;
-	private static final double Ival = 0;
-	private static final double Dval = 0;
-	private static final double Kval = 0;
+	public static final boolean PHASE_LEFT_SENSOR = true;
+	public static final boolean PHASE_RIGHT_SENSOR = false;
 	
-	public static final int LEFT_PEAK_OUTPUT_FORWARD = 1;
-	public static final int RIGHT_PEAK_OUTPUT_FORWARD = 1;
-	public static final int LEFT_PEAK_OUTPUT_REVERSE = 1;
-	public static final int RIGHT_PEAK_OUTPUT_REVERSE = 1;
+	public static final boolean LEFT_INVERTED = true;
+	public static final boolean RIGHT_INVERTED = true;
 	
-	public static final int DEFAULT_TIMEOUT = 10; //안녕하세요! 잘있으시죠? 방갑습니다!
+	public static final double LEFT_NOMINAL_OUTPUT_FORWARD = 0;
+	public static final double RIGHT_NOMINAL_OUTPUT_FORWARD = 0;
+	
+	public static final double LEFT_NOMINAL_OUTPUT_REVERSE = 0;
+	public static final double RIGHT_NOMINAL_OUTPUT_REVERSE = 0;
+	
+	public static final double LEFT_PEAK_OUTPUT_FORWARD = 1;
+	public static final double RIGHT_PEAK_OUTPUT_FORWARD = 1;
+	
+	public static final double LEFT_PEAK_OUTPUT_REVERSE = -1;
+	public static final double RIGHT_PEAK_OUTPUT_REVERSE = -1;
+	
+	public static final double LEFT_F = 0;
+	public static final double LEFT_P = 1;
+	public static final double LEFT_I = 0;
+	public static final double LEFT_D = 0;
+	
+	public static final double RIGHT_F = 0;
+	public static final double RIGHT_P = 1;
+	public static final double RIGHT_I = 0;
+	public static final double RIGHT_D = 0;
+	
+	public static final int ALLOWABLE_LOOP_ERROR = 0;
+	
+	public static final boolean COMPRESSOR_CLOSED_LOOP = true;
+	
+	public static final double WHEEL_DIAMETER = 6; // inches
+	public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; // inches
+	
+	public static final double ENCODER_UNITS_PER_ROTATION = 4096;
+	public static final int SHAFT_RATIO = 3;
 	
 	private WPI_TalonSRX frontLeft = new WPI_TalonSRX(RobotMap.FRONT_LEFT_MOTOR);
 	private WPI_TalonSRX rearLeft = new WPI_TalonSRX(RobotMap.REAR_LEFT_MOTOR);
+	private SpeedControllerGroup leftSide = new SpeedControllerGroup(frontLeft, rearLeft);
 	
 	private WPI_TalonSRX frontRight = new WPI_TalonSRX(RobotMap.FRONT_RIGHT_MOTOR);
 	private WPI_TalonSRX rearRight = new WPI_TalonSRX(RobotMap.REAR_RIGHT_MOTOR);
-
+	private SpeedControllerGroup rightSide = new SpeedControllerGroup(frontRight, rearRight);
+	
+	private DifferentialDrive drivetrain = new DifferentialDrive(leftSide, rightSide);
+	
 	private Compressor compressor = new Compressor();
-	private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD_PORT, 
-			RobotMap.SHIFTER_REVERSE_PORT);
-	private PigeonIMU pigeon = new PigeonIMU(frontLeft);
-	/*
-	private Encoder leftEncoder = new Encoder(RobotMap.ENCODER_INPUT_LEFT_A, RobotMap.ENCODER_INPUT_LEFT_B);
-	private Encoder rightEncoder = new Encoder(RobotMap.ENCODER_INPUT_RIGHT_A, RobotMap.ENCODER_INPUT_RIGHT_B);
-	*/
-	//us means microseconds? µ = micro
+	private DoubleSolenoid shifter = new DoubleSolenoid(RobotMap.SHIFTER_FORWARD, 
+			RobotMap.SHIFTER_REVERSE);
 	
-	private boolean shiftState = LOW_GEAR;
+	private PigeonIMU gyro = new PigeonIMU(rearRight);
 	
-	private DifferentialDrive drivetrain = new DifferentialDrive(frontLeft, frontRight);
-	
-	private Gyro gyroscope = new ADXRS450_Gyro();
-	
-	public double getAngle() {
-		return gyroscope.getAngle();
+	public enum Gear {
+		LOW, HIGH
 	}
 	
-	public Gyro getGyro() {
-		return gyroscope;
-	}
-	public DifferentialDrive getDrivetrain() {
-		return drivetrain;
-	}
-	/*
-	public Encoder getLeftEncoder() {
-		return leftEncoder;
-	}
+	private Gear shiftState = Gear.LOW;
 	
-	public Encoder getRightEncoder() {
-		return rightEncoder;
-	}
-	*/
-	public void driveForward(double velocity) {
-		Robot.drivetrain.frontLeft.set(velocity);
-		Robot.drivetrain.frontRight.set(velocity);
-		
-	}
+	private double[] yawRollPitch = new double[3];
+	private short[] accelerationXYZ = new short[3];
 	
-	public boolean isDoneDriving() {//is done driving in autonomous driving
-		return frontLeft.getOutputCurrent() == 0 && frontRight.getOutputCurrent() == 0;
-	}
-	public void toggleGear() {
-		if (shiftState == LOW_GEAR) {
-			shiftToHighGear();
-		}
-		else {
-			shiftToLowGear();
-		}
-	}
-	
-	public void shiftToHighGear() {
-		shifter.set(DoubleSolenoid.Value.kForward);
-		shiftState = HIGH_GEAR;
-	}
-	
-	public void shiftToLowGear() {
-		shifter.set(DoubleSolenoid.Value.kReverse);
-		shiftState = LOW_GEAR;
-	}
-
 	public Drivetrain() {
 		super("Drivetrain");
-		compressor.setClosedLoopControl(true);
 		
+		// Rear motor controllers follow front motor controllers
 		rearLeft.follow(frontLeft);
 		rearRight.follow(frontRight);
 		
-		frontLeft.setInverted(true);
-		frontLeft.setNeutralMode(NeutralMode.Brake);
-		frontRight.setNeutralMode(NeutralMode.Brake);
+		// Configure sensors
+		frontLeft.configSelectedFeedbackSensor(
+				com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 
+				DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
+		frontRight.configSelectedFeedbackSensor(
+				com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 
+				DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
 		
-		frontLeft.configClosedloopRamp(1, 1);
-		frontRight.configClosedloopRamp(1, 1);
+		// Set sensor phase
+		frontLeft.setSensorPhase(PHASE_LEFT_SENSOR);
+		frontRight.setSensorPhase(PHASE_RIGHT_SENSOR);
 		
-		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
-		frontRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 0);
+		// Configure motor controller neutral mode
+		frontLeft.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
+		rearLeft.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
+		frontRight.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
+		rearRight.setNeutralMode(com.ctre.phoenix.motorcontrol.NeutralMode.Brake);
 		
-		int pulseWidthPosLeft = frontLeft.getSensorCollection().getPulseWidthPosition();
-		int pulseWidthPosRight = frontRight.getSensorCollection().getPulseWidthPosition();
-		int pulseWidthUsLeft = frontLeft.getSensorCollection().getPulseWidthRiseToFallUs();
-		int pulseWidthUsRight = frontRight.getSensorCollection().getPulseWidthRiseToFallUs();
-		int periodUsLeft = frontLeft.getSensorCollection().getPulseWidthRiseToRiseUs();
-		int periodUsRight = frontRight.getSensorCollection().getPulseWidthRiseToRiseUs();
+		// Invert motor controller output
+		frontLeft.setInverted(LEFT_INVERTED);
+		rearLeft.setInverted(LEFT_INVERTED);
+		frontRight.setInverted(RIGHT_INVERTED);
+		rearRight.setInverted(RIGHT_INVERTED);
 		
-		int constP = 0;
-		int constI = 0;
-		int constD = 0;
-		int constK = 0;
-		int timeoutMs = 10;
-		
+		// Set nominal (minimum) and peak (maximum) outputs
+		frontLeft.configNominalOutputForward(LEFT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
+		frontLeft.configNominalOutputReverse(LEFT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 		frontLeft.configPeakOutputForward(LEFT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
-		frontRight.configPeakOutputForward(RIGHT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
 		frontLeft.configPeakOutputReverse(LEFT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
+		
+		frontRight.configNominalOutputForward(RIGHT_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
+		frontRight.configNominalOutputReverse(RIGHT_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
+		frontRight.configPeakOutputForward(RIGHT_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
 		frontRight.configPeakOutputReverse(RIGHT_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 		
-		frontLeft.config_kP(constP, Pval, timeoutMs);
-		frontLeft.config_kI(constI, Ival, timeoutMs);
-		frontLeft.config_kD(constD, Dval, timeoutMs);
-		frontLeft.config_kF(constK, Kval, timeoutMs);
+		// Configure closed-loop control
+		frontLeft.config_kF(DEFAULT_PID_IDX, LEFT_F, DEFAULT_TIMEOUT);
+		frontLeft.config_kP(DEFAULT_PID_IDX, LEFT_P, DEFAULT_TIMEOUT);
+		frontLeft.config_kI(DEFAULT_PID_IDX, LEFT_I, DEFAULT_TIMEOUT);
+		frontLeft.config_kD(DEFAULT_PID_IDX, LEFT_D, DEFAULT_TIMEOUT);
+		frontLeft.configAllowableClosedloopError(DEFAULT_PID_IDX, ALLOWABLE_LOOP_ERROR, DEFAULT_TIMEOUT);
 		
-		frontRight.config_kP(constP, Pval, timeoutMs);
-		frontRight.config_kI(constI, Ival, timeoutMs);
-		frontRight.config_kD(constD, Dval, timeoutMs);
-		frontRight.config_kF(constK, Kval, timeoutMs);
+		frontRight.config_kF(DEFAULT_PID_IDX, RIGHT_F, DEFAULT_TIMEOUT);
+		frontRight.config_kP(DEFAULT_PID_IDX, RIGHT_P, DEFAULT_TIMEOUT);
+		frontRight.config_kI(DEFAULT_PID_IDX, RIGHT_I, DEFAULT_TIMEOUT);
+		frontRight.config_kD(DEFAULT_PID_IDX, RIGHT_D, DEFAULT_TIMEOUT);
+		frontRight.configAllowableClosedloopError(DEFAULT_PID_IDX, ALLOWABLE_LOOP_ERROR, DEFAULT_TIMEOUT);
 		
-		pigeon.addFusedHeading(0.0, timeoutMs);
+		// Zero initial encoder position
+		zeroPosition();
 		
+		// Zero initial gyro angle
+		zeroYaw();
+		
+		// Set closed loop control for compressor
+		compressor.setClosedLoopControl(COMPRESSOR_CLOSED_LOOP);
+		
+		// Initialize to low gear
+		shiftGear(Gear.LOW);
+		SmartDashboard.putString("Gear", getShiftStateName());
 	}
+	
+	public void arcadeDrive(double speed, double rotation) {
+		drivetrain.arcadeDrive(speed, rotation);
+	}
+	
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		Robot.drivetrain.tankDrive(leftSpeed, rightSpeed);
-	}
-	
-	public void resetPosition() {
+		drivetrain.tankDrive(leftSpeed, rightSpeed);
 		
-	}
-	public double getCurrentPosition() {
-		//average out measurements from encoders.
-		return 0.0;
+		//System.out.println("L:" + frontLeft.getSensorCollection().getQuadraturePosition());
+		//System.out.println("R:" + frontRight.getSensorCollection().getQuadraturePosition());
+		
+		//System.out.println("Y:" + getCurrentYaw());
+		//System.out.println("R:" + getCurrentRoll());
+		//System.out.println("P:" + getCurrentPitch());
 	}
 	
-	@Override
-	protected void initDefaultCommand() {
-		setDefaultCommand(new TankDriveWithJoystick(Robot.oi.getJoystick(), OI.LEFT_Y_AXIS, OI.RIGHT_Y_AXIS));
+	public void driveDistance(double targetDistance) { // inches
+		double targetRotations = targetDistance / WHEEL_CIRCUMFERENCE;
+		double targetPosition = targetRotations * ENCODER_UNITS_PER_ROTATION / SHAFT_RATIO;
+
+		frontLeft.set(ControlMode.Position, targetPosition);
+		frontRight.set(ControlMode.Position, targetPosition);
+	}
+	
+	public double getCurrentPosition() {
+		double frontLeftPosition = frontLeft.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+		double frontRightPosition = frontRight.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+		double averagePosition = (frontLeftPosition + frontRightPosition) / 2;
+		
+		return averagePosition;
+	}
+	
+	public void zeroPosition() {
+		frontLeft.setSelectedSensorPosition(0, DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
+		frontRight.setSelectedSensorPosition(0, DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
+	}
+	
+	public void updateYawRollPitch() {
+		gyro.getYawPitchRoll(yawRollPitch);
+	}
+	
+	public void updateAccelerationXYZ() {
+		gyro.getBiasedAccelerometer(accelerationXYZ);
+	}
+	
+	public double getCurrentYaw() {
+		updateYawRollPitch();
+		
+		return yawRollPitch[0];
+	}
+	
+	public double getCurrentRoll() {
+		updateYawRollPitch();
+		
+		return yawRollPitch[1];
+	}
+	
+	public double getCurrentPitch() {
+		updateYawRollPitch();
+		
+		return yawRollPitch[2];
+	}
+	
+	public double getCurrentAccelerationX() {
+		updateAccelerationXYZ();
+		
+		return accelerationXYZ[0];
+	}
+	
+	public double getCurrentAccelerationY() {
+		updateAccelerationXYZ();
+		
+		return accelerationXYZ[1];
+	}
+	
+	public double getCurrentAccelerationZ() {
+		updateAccelerationXYZ();
+		
+		return accelerationXYZ[2];
+	}
+	
+	public void zeroYaw() {
+		gyro.setYaw(0, DEFAULT_TIMEOUT);
+	}
+	
+	public void shiftGear(Gear targetGear) {
+		switch (targetGear) {
+			case LOW:
+				shifter.set(DoubleSolenoid.Value.kReverse);
+				shiftState = Gear.LOW;
+			case HIGH:
+				shifter.set(DoubleSolenoid.Value.kForward);
+				shiftState = Gear.HIGH;
+		}
+	}
+	
+	public String getShiftStateName() {
+		return shiftState.toString();
 	}
 
-	
+	@Override
+	protected void initDefaultCommand() {
+		setDefaultCommand(new TankDriveWithXbox());
+	}
 }

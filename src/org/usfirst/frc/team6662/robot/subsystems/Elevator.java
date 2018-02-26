@@ -1,78 +1,89 @@
 package org.usfirst.frc.team6662.robot.subsystems;
 
 import org.usfirst.frc.team6662.robot.RobotMap;
+import org.usfirst.frc.team6662.robot.commands.MoveElevatorWithXbox;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
-
-	private WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR_ID);
+	public static final int DEFAULT_PID_IDX = 0;
+	public static final int DEFAULT_TIMEOUT = 0;
 	
-	private double MAX_SPEED =  79.0;  // in./sec,  output of gearbox
-	private double SPROCKET_DIAMETER = 1.9; //inches
-	private double peakOutputForward = 1.;
-	private double peakOutputReverse = -1.;
+	public static final boolean PHASE_SENSOR = true;
 	
-	private Elevator elevator = new Elevator();
-	public Elevator getElevator() {
-		return elevator;
+	public static final boolean MOTOR_INVERTED = true;
+	
+	public static final double MOTOR_NOMINAL_OUTPUT_FORWARD = 0;
+	public static final double MOTOR_NOMINAL_OUTPUT_REVERSE = 0;
+	
+	public static final double MOTOR_PEAK_OUTPUT_FORWARD = 1;
+	public static final double MOTOR_PEAK_OUTPUT_REVERSE = -1;
+	
+	public static final double F = 0;
+	public static final double P = 1;
+	public static final double I = 0;
+	public static final double D = 0;
+	
+	public static final int ALLOWABLE_LOOP_ERROR = 0;
+	
+	private WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR);
+	
+	public Elevator() {
+		super("Elevator");
+		
+		// Configure sensors
+		motor.configSelectedFeedbackSensor(
+				com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 
+				DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
+		
+		// Set sensor phase
+		motor.setSensorPhase(PHASE_SENSOR);
+		
+		// Configure motor controller neutral mode
+		motor.setNeutralMode(NeutralMode.Brake);
+		
+		// Invert motor controller output
+		motor.setInverted(MOTOR_INVERTED);
+		
+		// Set nominal (minimum) and peak (maximum) outputs
+		motor.configNominalOutputForward(MOTOR_NOMINAL_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
+		motor.configNominalOutputReverse(MOTOR_NOMINAL_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
+		motor.configPeakOutputForward(MOTOR_PEAK_OUTPUT_FORWARD, DEFAULT_TIMEOUT);
+		motor.configPeakOutputReverse(MOTOR_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
+		
+		// Configure closed-loop control
+		motor.config_kF(DEFAULT_PID_IDX, F, DEFAULT_TIMEOUT);
+		motor.config_kP(DEFAULT_PID_IDX, P, DEFAULT_TIMEOUT);
+		motor.config_kI(DEFAULT_PID_IDX, I, DEFAULT_TIMEOUT);
+		motor.config_kD(DEFAULT_PID_IDX, D, DEFAULT_TIMEOUT);
+		motor.configAllowableClosedloopError(DEFAULT_PID_IDX, ALLOWABLE_LOOP_ERROR, DEFAULT_TIMEOUT);
+		
+		// Zero initial encoder position
+		zeroPosition();
 	}
 	
-	private static final int PID_LoopNum = 0;
-	/*
-	private static final double PID_F_SETTING = 0;
-	private static final double PID_P_SETTING = 50.0;
-	private static final double PID_I_SETTING = 0.005;
-	private static final double PID_D_SETTING = 0;
-	*/
-	private static final int timeoutMS = 10;
-
-	//Max Morehead님, 읽고있으면, 꼭 알려줘고싶었어요: 너무 감사함니다!
-	public void moveAtJoystickPosition(double position) {
-		moveAtSpeed(position * MAX_SPEED);
-	}
-	public void moveAtSpeed(double targetSpeed) {
-	    double talonSpeed = convertToTalonSpeed(targetSpeed);
-		elevatorMotor.set(ControlMode.Velocity, talonSpeed);
-	}
-	private double convertToTalonSpeed(double targetSpeed) {
-	    double sprocketCircumference = SPROCKET_DIAMETER * Math.PI;
-	    //how many times the sprocket rotates with the given amount of time and speed (inch/sec.)
-	    double sprocketRotationsPerSecond = targetSpeed /  sprocketCircumference;
-	    /* unit conversion, converts sprocket's rps into units compatible with talon:
-	     *  (rotation/second) => (encoder clicks/100ms)
-	     */
-	    double talonSpeed = 4096. / 10. * sprocketRotationsPerSecond;
-	    return talonSpeed;
-	}
-	public void moveUp(double position){
-		elevator.moveAtJoystickPosition(Math.abs(position));
+	public void move(double speed) {
+		motor.set(ControlMode.PercentOutput, speed);
 	}
 	
-	public void moveDown(double position){
-		elevator.moveAtJoystickPosition(position *-1.0);
+	public void goToPosition(double targetPosition) {
+		motor.set(ControlMode.Position, targetPosition);
 	}
 	
-    public void initDefaultCommand() {
-    		
-    }
-    public Elevator() {
-    		elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PID_LoopNum, timeoutMS);
-		elevatorMotor.setSensorPhase(true);
-		/* The PID(F) value can easily be set up using the Web Configuration
-		elevatorMotor.configAllowableClosedloopError(0,PID_LoopNum, timeoutMS);
-		elevatorMotor.config_kF(PID_LoopNum, PID_F_SETTING, timeoutMS);
-		elevatorMotor.config_kP(PID_LoopNum, PID_P_SETTING, timeoutMS);
-		elevatorMotor.config_kI(PID_LoopNum, PID_I_SETTING, timeoutMS);
-		elevatorMotor.config_kD(PID_LoopNum, PID_D_SETTING, timeoutMS);
-		*/
-		elevatorMotor.configNominalOutputForward(0, timeoutMS);
-		elevatorMotor.configNominalOutputReverse(0, timeoutMS);
-		elevatorMotor.configPeakOutputForward(peakOutputForward, timeoutMS);
-		elevatorMotor.configPeakOutputReverse(peakOutputReverse, timeoutMS);
-    }
+	public void getCurrentPosition() {
+		motor.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+	}
+	
+	public void zeroPosition() {
+		motor.setSelectedSensorPosition(0, DEFAULT_PID_IDX, DEFAULT_TIMEOUT);
+	}
+	
+	@Override
+	protected void initDefaultCommand() {
+		setDefaultCommand(new MoveElevatorWithXbox());
+	}
 }
