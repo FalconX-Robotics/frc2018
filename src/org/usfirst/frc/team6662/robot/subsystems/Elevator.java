@@ -74,8 +74,8 @@ public class Elevator extends Subsystem {
 		motor.set(ControlMode.Position, targetPosition);
 	}
 	
-	public void getCurrentPosition() {
-		motor.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+	public double getCurrentPosition() {
+		return motor.getSelectedSensorPosition(DEFAULT_TIMEOUT);
 	}
 	
 	public void zeroPosition() {
