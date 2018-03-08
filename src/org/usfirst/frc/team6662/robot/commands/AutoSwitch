@@ -1,0 +1,48 @@
+public class AutoSwitch extends CommandGroup {
+  
+  public AutoSwitch(char position, char side){
+      
+      if(position == 'a'){
+        if(side == 'l'){
+          addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y));
+          addSequential(new TurnAngle(90));
+          addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
+          addSequential(new MoveElevatorToPosition(AutoMeasures.TO_SWITCH_HEIGHT));
+		      addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		      addSequential(new MoveRolleyGrabberLeftSide(0.7));
+        }
+        else if(side == 'r'){
+          addSequential(new DriveDistance(AutoMeasures.TO_PLATFORM_ZONE_Y));
+		      addSequential(new TurnAngle(90));
+		      addSequential(new DriveDistance(264));
+		      addSequential(new TurnAngle(90));
+		      addSequential(new DriveDistance(AutoMeasures.TO_PLATFORM_ZONE_Y - AutoMeasures.TO_SWITCH_Y));
+		      addSequential(new TurnAngle(90));
+		      addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
+		      addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
+		      addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		      addSequential(new MoveRolleyGrabberLeftSide(0.7));
+        }
+      }
+      else if(position == 'c'){
+        if(side == 'l'){
+          addSequential(new DriveForward(AutoMeasures.TO_PLATFORM_ZONE_Y));
+		      addSequential(new TurnAngle(-90));
+		      addSequential(new DriveForward(264));
+		      addSequential(new TurnAngle(-90));
+		      addSequential(new DriveDistance(AutoMeasures.TO_PLATFORM_ZONE_Y - AutoMeasures.TO_SWITCH_Y));
+		      addSequential(new TurnAngle(-90));
+		      addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
+		      addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
+		      addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		      addSequential(new MoveRolleyGrabberLeftSide(0.7));
+        }
+        else if(side == 'r'){
+          addSequential(new DriveForward(AutoMeasures.TO_SWITCH_Y));
+		      addSequential(new TurnAngle(-90));
+		      addSequential(new DriveForward(AutoMeasures.TO_SWITCH_X));
+		      addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
+		      addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		      addSequential(new MoveRolleyGrabberLeftSide(0.7));
+        }
+      }
