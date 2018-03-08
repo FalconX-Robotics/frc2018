@@ -24,6 +24,32 @@ public class AutoSwitch extends CommandGroup {
 		      addSequential(new MoveRolleyGrabberLeftSide(0.7));
         }
       }
+      else if(position == 'b'){
+      	if(side == 'l'){
+		addSequential(new DriveDistance(AutoMeasures.INITIAL_DRIVE_FORWARD));
+		addSequential(new TurnAngle(-90));
+		addSequential(new DriveDistance(AutoMeasures.MIDDLE_TO_LEFT));
+		addSequential(new TurnAngle(90));
+		addSequential(new DriveDistance(Auto.Measures.TO_SWITCH_Y - AutoMeasures.INITIAL_DRIVE_FORWARD));
+		addSequential(new TurnAngle(90));
+		addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
+		addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
+		addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		addSequential(new MoveRolleyGrabberLeftSide(0.7));
+	}
+        if else(side == 'r'){
+		addSequential(new DriveDistance(AutoMeasures.INITIAL_DRIVE_FORWARD));
+		addSequential(new TurnAngle(90));
+		addSequential(new DriveDistance(AutoMeasures.MIDDLE_TO_LEFT));
+		addSequential(new TurnAngle(-90));
+		addSequential(new DriveDistance(Auto.Measures.TO_SWITCH_Y - AutoMeasures.INITIAL_DRIVE_FORWARD));
+		addSequential(new TurnAngle(-90));
+		addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
+		addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
+		addParallel(new MoveRolleyGrabberRightSide(-0.7));
+		addSequential(new MoveRolleyGrabberLeftSide(0.7));
+	}
+      }
       else if(position == 'c'){
         if(side == 'l'){
           addSequential(new DriveForward(AutoMeasures.TO_PLATFORM_ZONE_Y));
