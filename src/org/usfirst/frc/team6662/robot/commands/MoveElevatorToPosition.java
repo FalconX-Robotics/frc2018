@@ -16,7 +16,7 @@ public class MoveElevatorToPosition extends Command {
 		super("Move elevator to " + targetPosition + "inches"); // TO-DO: Convert targetPosition from inches to units
 		requires(Robot.elevator);
 		
-		this.targetPosition = targetPosition / GEAR_RATIO * inchesToUnits;
+		this.targetPosition = targetPosition * inchesToUnits / GEAR_RATIO;
 	}
 	
 	@Override
