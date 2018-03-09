@@ -38,9 +38,7 @@ public class AutoSwitch extends CommandGroup {
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y));
     	  addSequential(new TurnAngle(angle));
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
-    	  addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
-    	  addParallel(new MoveRolleyGrabberRightSide(-0.7));
-    	  addSequential(new MoveRolleyGrabberLeftSide(0.7));
+    	  addSequential(new MoveElevatorToElement("switch"));
     	}
 
     	void oppositeSideAutonomous(double angle){
@@ -51,9 +49,7 @@ public class AutoSwitch extends CommandGroup {
     	  addSequential(new DriveDistance(AutoMeasures.TO_PLATFORM_ZONE_Y - AutoMeasures.TO_SWITCH_Y));
     	  addSequential(new TurnAngle(angle));
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
-    	  addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
-    	  addParallel(new MoveRolleyGrabberRightSide(-0.7));
-    	  addSequential(new MoveRolleyGrabberLeftSide(0.7));
+    	  addSequential(new MoveElevatorToElement("switch"));
     	}
 
     	void positionB(double distance, double angle){
@@ -64,9 +60,7 @@ public class AutoSwitch extends CommandGroup {
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y - AutoMeasures.INITIAL_DRIVE_FORWARD));
     	  addSequential(new TurnAngle(angle));
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
-    	  addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
-    	  addParallel(new MoveRolleyGrabberRightSide(-0.7));
-    	  addSequential(new MoveRolleyGrabberLeftSide(0.7));
+    	  addSequential(new MoveElevatorToElement("switch"));
     	}
 
 }
