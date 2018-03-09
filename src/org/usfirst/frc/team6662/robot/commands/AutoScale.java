@@ -42,7 +42,7 @@ public class AutoScale extends CommandGroup {
 	      addSequential(new DriveDistance(AutoMeasures.TO_SCALE_Y - AutoMeasures.INITIAL_DRIVE_FORWARD));
 	   	  addSequential(new TurnAngle(angle));
 	   	  addSequential(new DriveDistance(AutoMeasures.TO_SCALE_X));
-	   	  addSequential(new MoveElevatorToElement("switch"));	
+	   	  addSequential(new MoveElevatorToElement("scale"));	
 		}
 
 		void oppositeSideAutonomous(double angle) {
@@ -53,13 +53,13 @@ public class AutoScale extends CommandGroup {
 	   	  addSequential(new DriveDistance(AutoMeasures.TO_SCALE_Y - AutoMeasures.TO_PLATFORM_ZONE_Y));
 	   	  addSequential(new TurnAngle(angle));
 	   	  addSequential(new DriveDistance(AutoMeasures.TO_SCALE_X));
-	   	  addSequential(new MoveElevatorToElement("switch"));
+	   	  addSequential(new MoveElevatorToElement("scale"));
 		}
 
 		void sameSideAutonomous(double angle) {
 		  addSequential(new DriveDistance(AutoMeasures.TO_SCALE_Y));
 	      addSequential(new TurnAngle(angle));
 	      addSequential(new DriveDistance(AutoMeasures.TO_SCALE_X));
-	      addSequential(new MoveElevatorToElement("switch"));
+	      addSequential(new MoveElevatorToElement("scale"));
 		}
 }

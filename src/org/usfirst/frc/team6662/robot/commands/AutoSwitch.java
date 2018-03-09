@@ -18,7 +18,7 @@ public class AutoSwitch extends CommandGroup {
     	      }
     	      else if(position == 'b'){
     	      	if(side == 'l'){
-    			positionB(AutoMeasures.MIDDLE_TO_LEFT, 90);
+    			positionB(AutoMeasures.MIDDLE_TO_LEFT, -90);
     		}
     	      	else if(side == 'r'){
     			positionB(AutoMeasures.MIDDLE_TO_RIGHT, 90);
@@ -51,16 +51,15 @@ public class AutoSwitch extends CommandGroup {
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
     	  addSequential(new MoveElevatorToElement("switch"));
     	}
-
+ 
     	void positionB(double distance, double angle){
     	  addSequential(new DriveDistance(AutoMeasures.INITIAL_DRIVE_FORWARD));
     	  addSequential(new TurnAngle(angle));
     	  addSequential(new DriveDistance(distance));
     	  addSequential(new TurnAngle(-angle));
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y - AutoMeasures.INITIAL_DRIVE_FORWARD));
-    	  addSequential(new TurnAngle(angle));
+    	  addSequential(new TurnAngle(-angle));
     	  addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
     	  addSequential(new MoveElevatorToElement("switch"));
     	}
-
 }
