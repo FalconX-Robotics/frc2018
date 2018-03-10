@@ -9,26 +9,26 @@ public class AutoScale extends CommandGroup {
     	public AutoScale(char position, char side){
     	    
     	    if(position == 'a'){
-    	      if(side == 'l'){
+    	      if(side == 'L'){
     	        sameSideAutonomous(90);
     	      }
-    	      else if(side == 'r'){
+    	      else if(side == 'R'){
     	        oppositeSideAutonomous(-90);
     	      }
     	    }
     	    else if(position == 'b'){
-    	    	if(side == 'l'){
+    	    	if(side == 'L'){
     	    			positionB(AutoMeasures.MIDDLE_TO_LEFT, 90);
     	    	}
-    	    	else if(side == 'r'){
+    	    	else if(side == 'R'){
     	    		positionB(AutoMeasures.MIDDLE_TO_RIGHT, -90);
     	    	}
     	    }
     	    else if(position == 'c'){
-    	      if(side == 'l'){
+    	      if(side == 'L'){
     	        oppositeSideAutonomous(90);
     	      }
-    	      else if(side == 'r'){
+    	      else if(side == 'R'){
     	        sameSideAutonomous(-90);
     	      }
     	    }
