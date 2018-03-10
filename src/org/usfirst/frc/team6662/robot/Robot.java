@@ -28,6 +28,9 @@ public class Robot extends TimedRobot {
 		elevator = new Elevator(); 
 		rolleyGrabber = new RolleyGrabber();
 		
+		Command autoRoute;
+		SendableChooser autoChooser;
+		
 		oi = new OI();
 		
 		CameraServer.getInstance().startAutomaticCapture();
@@ -35,6 +38,15 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void autonomousInit() {
+		String gameData;
+		char allianceSwitch;
+		char allianceScale; //I assume that we won't be needing opponent switch
+		
+		while (gameData.length() < 3){
+		gamedata = DriverStation.getInstance().getGameSpecificMessage();
+		allianceSwitch = gameData[0];
+		allianceScale = gameData[1];
+		}
 		
 	}
 	
