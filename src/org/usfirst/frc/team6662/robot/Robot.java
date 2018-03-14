@@ -12,8 +12,11 @@ import org.usfirst.frc.team6662.robot.subsystems.Elevator;
 import org.usfirst.frc.team6662.robot.subsystems.RolleyGrabber;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class Robot extends TimedRobot {
 	public static Drivetrain drivetrain;
@@ -38,14 +41,14 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void autonomousInit() {
-		String gameData;
+		String gameData = "";
 		char allianceSwitch;
 		char allianceScale; //I assume that we won't be needing opponent switch
 		
 		while (gameData.length() < 3){
-		gamedata = DriverStation.getInstance().getGameSpecificMessage();
-		allianceSwitch = gameData[0];
-		allianceScale = gameData[1];
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+			allianceSwitch = gameData.charAt(0);
+			allianceScale = gameData.charAt(1);
 		}
 		
 	}
