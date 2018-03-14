@@ -16,8 +16,7 @@ public class AutoRoutePosCScaleL extends CommandGroup {
 		addSequential(new TurnAngle(90));
 		addSequential(new DriveForward(AutoMeasures.TO_SCALE_X));
 		addSequential(new MoveElevatorToPosition(AutoMeasures.SCALE_HEIGHT));
-		addParallel(new MoveRolleyGrabberRightSide(-0.7));
-		addSequential(new MoveRolleyGrabberLeftSide(0.7));
+		addSequential(new MoveRolleyGrabber(1.0, 1.0, "out"));
 		
     }
 }

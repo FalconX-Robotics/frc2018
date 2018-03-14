@@ -12,8 +12,7 @@ public class AutoRoutePosASwitchL extends CommandGroup {
 		addSequential(new TurnAngle(90));
 		addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
 		addSequential(new MoveElevatorToPosition(AutoMeasures.SWITCH_HEIGHT));
-		addParallel(new MoveRolleyGrabberRightSide(-0.7));
-		addSequential(new MoveRolleyGrabberLeftSide(0.7));
+		addSequential(new MoveRolleyGrabber(1.0, 1.0, "out"));
 		
     }
 }

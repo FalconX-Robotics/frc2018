@@ -14,14 +14,11 @@ public class MoveRolleyGrabber extends Command{
 	public MoveRolleyGrabber(double seconds, double speed, String direction) {
 		super("Moving Rolleygrabber " + seconds + " seconds "+ direction + "wards");
 		requires(Robot.rolleyGrabber);
+		
 		this.targetSeconds = seconds;
-		//target seconds for how long the rolleygrabber will draw in the powercube
-		if(direction == "In") {//this has to be in perspective of the right rolleygrabber motor
-			this.speed = Math.abs(speed) * -1;
-		}
-		else {
-			this.speed = Math.abs(speed);
-		}
+		//target seconds for how long the rolleygrabber will draw in the power cube
+		this.speed = (direction =="in") ? speed : speed *-1;
+		
 	}
 	@Override
 	protected void initialize() {
