@@ -5,9 +5,7 @@ import org.usfirst.frc.team6662.robot.AutoMeasures;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoRoutePosCScaleL extends CommandGroup {
-
     public AutoRoutePosCScaleL() {
-        
     	addSequential(new DriveForward(AutoMeasures.TO_PLATFORM_ZONE_Y));
 		addSequential(new TurnAngle(-90));
 		addSequential(new DriveForward(264));
@@ -16,7 +14,6 @@ public class AutoRoutePosCScaleL extends CommandGroup {
 		addSequential(new TurnAngle(90));
 		addSequential(new DriveForward(AutoMeasures.TO_SCALE_X));
 		addSequential(new MoveElevatorToPosition(AutoMeasures.SCALE_HEIGHT));
-		addSequential(new MoveRolleyGrabber(1.0, 1.0, "out"));
-		
+		addSequential(new MoveRolleyGrabber(1.0, 1.0));
     }
 }

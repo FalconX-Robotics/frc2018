@@ -11,20 +11,24 @@ public class MoveRolleyGrabber extends Command{
 	
 	private Timer timer = new Timer();
 	
-	public MoveRolleyGrabber(double seconds, double speed, String direction) {
-		super("Moving Rolleygrabber " + seconds + " seconds "+ direction + "wards");
+	public MoveRolleyGrabber(double speed) {
+		this(speed, 0.0);
+	}
+	
+	public MoveRolleyGrabber(double speed, double seconds) {
+		super("Move rolley-grabber motors" + (seconds > 0 ? " for " + seconds + " seconds" : ""));
 		requires(Robot.rolleyGrabber);
 		
-		this.targetSeconds = seconds;
-		//target seconds for how long the rolleygrabber will draw in the power cube
-		this.speed = (direction =="in") ? speed : speed *-1;
-		
+		this.speed = speed;
+		this.targetSeconds = seconds;	
 	}
+	
 	@Override
 	protected void initialize() {
 		timer.start();
 		this.currentSeconds = 0.0;
 	}
+	
 	@Override
 	protected void execute() {
 		Robot.rolleyGrabber.moveLeftMotor(speed);
@@ -34,11 +38,15 @@ public class MoveRolleyGrabber extends Command{
 	@Override
 	protected boolean isFinished() {
 		currentSeconds = timer.get();
-		if (timer.get() == targetSeconds) {
+		
+		boolean finished = currentSeconds >= targetSeconds;
+		
+		if (finished) {
 			timer.stop();
 			timer.reset();
 		}
-		return this.currentSeconds == targetSeconds;
+		
+		return finished;
 	}
 
 }

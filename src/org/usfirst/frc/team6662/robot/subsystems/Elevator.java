@@ -31,6 +31,11 @@ public class Elevator extends Subsystem {
 	
 	public static final int ALLOWABLE_LOOP_ERROR = 0;
 	
+	public static final double SPROCKET_DIAMETER = 1.751;
+	public static final double SPROCKET_CIRCUMFERENCE = Math.PI * SPROCKET_DIAMETER;
+	public static final double ENCODER_UNITS_PER_ROTATION = 4096;
+	public static final int SHAFT_RATIO = 7;
+	
 	private WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR);
 	
 	public Elevator() {
@@ -70,7 +75,10 @@ public class Elevator extends Subsystem {
 		motor.set(ControlMode.PercentOutput, speed);
 	}
 	
-	public void goToPosition(double targetPosition) {
+	public void goToPosition(double targetDistance) {
+		double targetRotations = targetDistance / SPROCKET_CIRCUMFERENCE;
+		double targetPosition = targetRotations * ENCODER_UNITS_PER_ROTATION / SHAFT_RATIO;
+		
 		motor.set(ControlMode.Position, targetPosition);
 	}
 	
