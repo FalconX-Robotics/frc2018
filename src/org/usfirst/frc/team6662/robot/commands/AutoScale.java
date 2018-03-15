@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoScale extends CommandGroup {
 	public AutoScale(StartingPosition position, Side side) {
 		switch (position) {
-    	case A:
+    	case L:
     		switch (side) {
     		case L:
     			sameSideAutonomous(90);
@@ -19,7 +19,7 @@ public class AutoScale extends CommandGroup {
     			break;
     		}
     		break;
-    	case B:
+    	case M:
     		switch (side) {
     		case L:
     			positionB(AutoMeasures.MIDDLE_TO_LEFT, 90);
@@ -29,7 +29,7 @@ public class AutoScale extends CommandGroup {
     			break;
     		}
     		break;
-    	case C:
+    	case R:
     		switch (side) {
     		case L:
     			oppositeSideAutonomous(90);

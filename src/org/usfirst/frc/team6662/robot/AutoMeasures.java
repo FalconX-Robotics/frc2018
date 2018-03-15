@@ -19,7 +19,7 @@ public class AutoMeasures {
 	public static final double TO_PLATFORM_ZONE_Y = 0;
 	
 	public enum StartingPosition {
-		A, B, C
+		L, M, R
 	}
 	
 	public enum Side {

@@ -4,8 +4,8 @@ import org.usfirst.frc.team6662.robot.AutoMeasures;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutoRoutePosASwitchL extends CommandGroup {
-    public AutoRoutePosASwitchL() {
+public class AutoRouteStartLSwitchL extends CommandGroup {
+    public AutoRouteStartLSwitchL() {
     	addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y));
 		addSequential(new TurnAngle(90));
 		addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));

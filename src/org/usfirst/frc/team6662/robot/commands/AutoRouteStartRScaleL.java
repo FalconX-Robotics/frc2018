@@ -4,8 +4,8 @@ import org.usfirst.frc.team6662.robot.AutoMeasures;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutoRoutePosCScaleL extends CommandGroup {
-    public AutoRoutePosCScaleL() {
+public class AutoRouteStartRScaleL extends CommandGroup {
+    public AutoRouteStartRScaleL() {
     	addSequential(new DriveForward(AutoMeasures.TO_PLATFORM_ZONE_Y));
 		addSequential(new TurnAngle(-90));
 		addSequential(new DriveForward(264));
