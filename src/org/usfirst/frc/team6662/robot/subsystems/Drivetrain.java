@@ -237,9 +237,11 @@ public class Drivetrain extends Subsystem {
 			case LOW:
 				shifter.set(DoubleSolenoid.Value.kReverse);
 				shiftState = Gear.LOW;
+				break;
 			case HIGH:
 				shifter.set(DoubleSolenoid.Value.kForward);
 				shiftState = Gear.HIGH;
+				break;
 		}
 	}
 	
