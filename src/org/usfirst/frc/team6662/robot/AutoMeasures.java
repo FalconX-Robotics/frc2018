@@ -1,7 +1,6 @@
 package org.usfirst.frc.team6662.robot;
 
 public class AutoMeasures {
-	
 	public static final double MIDDLE_TO_RIGHT = 0;
 	public static final double MIDDLE_TO_LEFT = 0;
 	//INITIAL_DRIVE_FORWARD is only used for starting position B
@@ -19,4 +18,11 @@ public class AutoMeasures {
 	public static final double TO_SWITCH_Y = 0;
 	public static final double TO_PLATFORM_ZONE_Y = 0;
 	
+	public enum StartingPosition {
+		A, B, C
+	}
+	
+	public enum Side {
+		L, R
+	}
 }

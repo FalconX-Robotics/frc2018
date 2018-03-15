@@ -1,35 +1,45 @@
 package org.usfirst.frc.team6662.robot.commands;
 
 import org.usfirst.frc.team6662.robot.AutoMeasures;
+import org.usfirst.frc.team6662.robot.AutoMeasures.Side;
+import org.usfirst.frc.team6662.robot.AutoMeasures.StartingPosition;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoScale extends CommandGroup {
-	public AutoScale(char position, char side) {
-		if(position == 'a') {
-			if(side == 'L') {
-				sameSideAutonomous(90);
-			}
-			else if(side == 'R'){
-				oppositeSideAutonomous(-90);
-			}
-		}
-		else if(position == 'b') {
-			if(side == 'L') {
-				positionB(AutoMeasures.MIDDLE_TO_LEFT, 90);
-			}
-			else if(side == 'R'){
-				positionB(AutoMeasures.MIDDLE_TO_RIGHT, -90);
-			}
-		}
-		else if(position == 'c'){
-			if(side == 'L') {
-				oppositeSideAutonomous(90);
-			}
-			else if(side == 'R'){
-				sameSideAutonomous(-90);
-			}
-		}
+	public AutoScale(StartingPosition position, Side side) {
+		switch (position) {
+    	case A:
+    		switch (side) {
+    		case L:
+    			sameSideAutonomous(90);
+    			break;
+    		case R:
+    			oppositeSideAutonomous(-90);
+    			break;
+    		}
+    		break;
+    	case B:
+    		switch (side) {
+    		case L:
+    			positionB(AutoMeasures.MIDDLE_TO_LEFT, 90);
+    			break;
+    		case R:
+    			positionB(AutoMeasures.MIDDLE_TO_RIGHT, -90);
+    			break;
+    		}
+    		break;
+    	case C:
+    		switch (side) {
+    		case L:
+    			oppositeSideAutonomous(90);
+    			break;
+    		case R:
+    			sameSideAutonomous(-90);
+    			break;
+    		}
+    		break;
+    	}
 	}
 	
 	void positionB(double distance, double angle) {
