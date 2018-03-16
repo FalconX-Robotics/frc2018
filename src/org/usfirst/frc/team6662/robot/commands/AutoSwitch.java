@@ -43,6 +43,7 @@ public class AutoSwitch extends CommandGroup {
     }
     
     void sameSideAutonomous(double angle){
+    	addSequential(new ShiftToLowGear());
     	addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_Y));
     	addSequential(new TurnAngle(angle));
     	addSequential(new DriveDistance(AutoMeasures.TO_SWITCH_X));
@@ -50,6 +51,7 @@ public class AutoSwitch extends CommandGroup {
     }
     
     void oppositeSideAutonomous(double angle){
+    	addSequential(new ShiftToLowGear());
     	addSequential(new DriveDistance(AutoMeasures.TO_PLATFORM_ZONE_Y));
     	addSequential(new TurnAngle(angle));
     	addSequential(new DriveDistance(264));
@@ -61,6 +63,7 @@ public class AutoSwitch extends CommandGroup {
     }
     
     void positionB(double distance, double angle){
+    	addSequential(new ShiftToLowGear());
     	addSequential(new DriveDistance(AutoMeasures.INITIAL_DRIVE_FORWARD));
     	addSequential(new TurnAngle(angle));
     	addSequential(new DriveDistance(distance));
