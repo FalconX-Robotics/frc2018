@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team6662.robot;
 
+import org.usfirst.frc.team6662.robot.commands.AutoScale;
+import org.usfirst.frc.team6662.robot.commands.AutoSwitch;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team6662.robot.subsystems.Elevator;
 import org.usfirst.frc.team6662.robot.subsystems.RolleyGrabber;
@@ -23,6 +25,9 @@ public class Robot extends TimedRobot {
 	public static Elevator elevator;
 	public static RolleyGrabber rolleyGrabber;
 	
+	Command autoRoute;
+	SendableChooser<Command> autoChooser;
+	
 	public static OI oi;
 	
 	@Override
@@ -30,11 +35,17 @@ public class Robot extends TimedRobot {
 		drivetrain = new Drivetrain();
 		elevator = new Elevator(); 
 		rolleyGrabber = new RolleyGrabber();
-		
-		Command autoRoute;
-		SendableChooser autoChooser;
-		
+
 		oi = new OI();
+		
+		autoChooser = new SendableChooser<Command>();
+		
+		autoChooser.addDefault("Position L to Switch", new AutoSwitch('L',allianceSwitch));
+		autoChooser.addObject("Position M to Switch", new AutoSwitch('M',allianceSwitch));
+		autoChooser.addObject("Position R to Switch", new AutoSwitch('R',allianceSwitch));
+		autoChooser.addObject("Position L to Scale", new AutoScale('L',allianceScale));
+		autoChooser.addObject("Position M to Scale", new AutoScale('M',allianceScale));
+		autoChooser.addObject("Position R to Scale", new AutoScale,allianceScale));
 		
 		CameraServer.getInstance().startAutomaticCapture();
 	}
@@ -43,14 +54,15 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		String gameData = "";
 		char allianceSwitch;
-		char allianceScale; //I assume that we won't be needing opponent switch
-		
-		while (gameData.length() < 3){
+		char allianceScale;		
+		while (gameData != null && gameData.length() >= 2){
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
 			allianceSwitch = gameData.charAt(0);
 			allianceScale = gameData.charAt(1);
 		}
 		
+		autoRoute = autoChooser.getSelected();
+		autoRoute.start();
 	}
 	
 	@Override
@@ -60,7 +72,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void teleopInit() {
-		
+		Scheduler.getInstance().removeAll();
 	}
 	
 	@Override
