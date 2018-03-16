@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 
 public class TurnAngle extends Command {
-	public static final double SPEED = 0;
-	public static final double ROTATION = 0.7;
+
+	private static final double SPEED = 1;
 	
 	private double angle = 0;
 	
@@ -32,9 +32,10 @@ public class TurnAngle extends Command {
 	
 	@Override
 	protected void execute() {
-		double rotation = Math.copySign(ROTATION, angle);
+	//	double ROTATION = Math.copySign(ROTATION, angle);
+		double SPEED = Math.copySign(TurnAngle.SPEED, angle);
 		
-		Robot.drivetrain.arcadeDrive(SPEED, rotation);
+		Robot.drivetrain.tankDrive(SPEED, -1 * SPEED);
 	}
 	
 	@Override
