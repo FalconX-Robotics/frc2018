@@ -30,6 +30,9 @@ public class Robot extends TimedRobot {
 	
 	public static OI oi;
 	
+	char allianceSwitch = 'L';
+	char allianceScale = 'L';
+	
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
@@ -40,26 +43,24 @@ public class Robot extends TimedRobot {
 		
 		autoChooser = new SendableChooser<Command>();
 		
-		autoChooser.addDefault("Position L to Switch", new AutoSwitch('L',allianceSwitch));
-		autoChooser.addObject("Position M to Switch", new AutoSwitch('M',allianceSwitch));
-		autoChooser.addObject("Position R to Switch", new AutoSwitch('R',allianceSwitch));
-		autoChooser.addObject("Position L to Scale", new AutoScale('L',allianceScale));
-		autoChooser.addObject("Position M to Scale", new AutoScale('M',allianceScale));
-		autoChooser.addObject("Position R to Scale", new AutoScale,allianceScale));
-		
 		CameraServer.getInstance().startAutomaticCapture();
 	}
 	
 	@Override
 	public void autonomousInit() {
-		String gameData = "";
-		char allianceSwitch;
-		char allianceScale;		
+		String gameData = "";		
 		while (gameData != null && gameData.length() >= 2){
 			gameData = DriverStation.getInstance().getGameSpecificMessage();
 			allianceSwitch = gameData.charAt(0);
 			allianceScale = gameData.charAt(1);
 		}
+		
+		autoChooser.addDefault("Position L to Switch", new AutoSwitch("Left",allianceSwitch));
+		autoChooser.addObject("Position M to Switch", new AutoSwitch("Middle",allianceSwitch));
+		autoChooser.addObject("Position R to Switch", new AutoSwitch("Right",allianceSwitch));
+		autoChooser.addObject("Position L to Scale", new AutoScale("Left",allianceScale));
+		autoChooser.addObject("Position M to Scale", new AutoScale("Middle",allianceScale));
+		autoChooser.addObject("Position R to Scale", new AutoScale("Right",allianceScale));
 		
 		autoRoute = autoChooser.getSelected();
 		autoRoute.start();

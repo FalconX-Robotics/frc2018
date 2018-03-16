@@ -1,40 +1,38 @@
 package org.usfirst.frc.team6662.robot.commands;
 
 import org.usfirst.frc.team6662.robot.AutoMeasures;
-import org.usfirst.frc.team6662.robot.AutoMeasures.Side;
-import org.usfirst.frc.team6662.robot.AutoMeasures.StartingPosition;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class AutoSwitch extends CommandGroup {
-    public AutoSwitch(StartingPosition position, Side side) {
+    public AutoSwitch(String position, char side) {
     	switch (position) {
-    	case L:
+    	case "Left":
     		switch (side) {
-    		case L:
+    		case 'L':
     			sameSideAutonomous(90);
     			break;
-    		case R:
+    		case 'R':
     			oppositeSideAutonomous(90);
     			break;
     		}
     		break;
-    	case M:
+    	case "Middle":
     		switch (side) {
-    		case L:
+    		case 'L':
     			positionB(AutoMeasures.MIDDLE_TO_LEFT, -90);
     			break;
-    		case R:
+    		case 'R':
     			positionB(AutoMeasures.MIDDLE_TO_RIGHT, 90);
     			break;
     		}
     		break;
-    	case R:
+    	case "Right":
     		switch (side) {
-    		case L:
+    		case 'L':
     			oppositeSideAutonomous(-90);
     			break;
-    		case R:
+    		case 'R':
     			sameSideAutonomous(-90);
     			break;
     		}
