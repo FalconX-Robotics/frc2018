@@ -27,6 +27,9 @@ public class RolleyGrabber extends Subsystem {
 	
 	public static final int DEFAULT_TIMEOUT = 0;
 	
+	public static final double OUT_SPEED_LIMIT = 1;
+	public static final double IN_SPEED_LIMIT = -0.8;
+	
 	private WPI_TalonSRX leftMotor = new WPI_TalonSRX(RobotMap.ROLLEY_GRABBER_LEFT_MOTOR);
 	private WPI_TalonSRX rightMotor = new WPI_TalonSRX(RobotMap.ROLLEY_GRABBER_RIGHT_MOTOR);
 	
@@ -54,10 +57,24 @@ public class RolleyGrabber extends Subsystem {
 	}
 	
 	public void moveLeftMotor(double speed) {
+		if (speed > 0) {
+			speed = Math.min(speed, OUT_SPEED_LIMIT);
+		}
+		else {
+			speed = Math.max(speed, IN_SPEED_LIMIT);
+		}
+		
 		leftMotor.set(ControlMode.PercentOutput, speed);
 	}
 	
 	public void moveRightMotor(double speed) {
+		if (speed > 0) {
+			speed = Math.min(speed, OUT_SPEED_LIMIT);
+		}
+		else {
+			speed = Math.max(speed, IN_SPEED_LIMIT);
+		}
+		
 		rightMotor.set(ControlMode.PercentOutput, speed);
 	}
 	

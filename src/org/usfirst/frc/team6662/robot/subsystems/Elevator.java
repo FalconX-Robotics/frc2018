@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Elevator extends Subsystem {
@@ -29,12 +30,17 @@ public class Elevator extends Subsystem {
 	public static final double I = 0;
 	public static final double D = 0;
 	
+	public static final int PID_MAIN_LOOP = 0;
+	
 	public static final int ALLOWABLE_LOOP_ERROR = 0;
 	
 	public static final double SPROCKET_DIAMETER = 1.751;
 	public static final double SPROCKET_CIRCUMFERENCE = Math.PI * SPROCKET_DIAMETER;
 	public static final double ENCODER_UNITS_PER_ROTATION = 4096;
 	public static final int SHAFT_RATIO = 7;
+	
+	public static final double UP_SPEED_LIMIT = 0.8;
+	public static final double DOWN_SPEED_LIMIT = -0.6;
 	
 	private WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.ELEVATOR_MOTOR);
 	
@@ -61,17 +67,28 @@ public class Elevator extends Subsystem {
 		motor.configPeakOutputReverse(MOTOR_PEAK_OUTPUT_REVERSE, DEFAULT_TIMEOUT);
 		
 		// Configure closed-loop control
-		motor.config_kF(DEFAULT_PID_IDX, F, DEFAULT_TIMEOUT);
+		/*motor.config_kF(DEFAULT_PID_IDX, F, DEFAULT_TIMEOUT);
 		motor.config_kP(DEFAULT_PID_IDX, P, DEFAULT_TIMEOUT);
 		motor.config_kI(DEFAULT_PID_IDX, I, DEFAULT_TIMEOUT);
-		motor.config_kD(DEFAULT_PID_IDX, D, DEFAULT_TIMEOUT);
+		motor.config_kD(DEFAULT_PID_IDX, D, DEFAULT_TIMEOUT);*/
 		motor.configAllowableClosedloopError(DEFAULT_PID_IDX, ALLOWABLE_LOOP_ERROR, DEFAULT_TIMEOUT);
 		
 		// Zero initial encoder position
 		zeroPosition();
 	}
 	
+	public double getError() {
+		return motor.getClosedLoopError(PID_MAIN_LOOP);
+	}
+	
 	public void move(double speed) {
+		if (speed > 0) {
+			speed = Math.min(speed, UP_SPEED_LIMIT);
+		}
+		else {
+			speed = Math.max(speed, DOWN_SPEED_LIMIT);
+		}
+		
 		motor.set(ControlMode.PercentOutput, speed);
 	}
 	

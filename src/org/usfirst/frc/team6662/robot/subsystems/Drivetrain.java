@@ -159,24 +159,28 @@ public class Drivetrain extends Subsystem {
 		
 		// Un-comment the lines below to get encoder position readings
 		
-		//System.out.println("L:" + frontLeft.getSensorCollection().getQuadraturePosition());
-		//System.out.println("R:" + frontRight.getSensorCollection().getQuadraturePosition());
+		//System.out.println("L:" + frontLeft.getSelectedSensorPosition(DEFAULT_TIMEOUT));
+		//System.out.println("R:" + frontRight.getSelectedSensorPosition(DEFAULT_TIMEOUT));
 	}
 	
 	public void driveDistance(double targetDistance) { // inches
 		double targetRotations = targetDistance / WHEEL_CIRCUMFERENCE;
 		double targetPosition = targetRotations * ENCODER_UNITS_PER_ROTATION / SHAFT_RATIO;
-
-		frontLeft.set(ControlMode.Position, targetPosition);
+		
+		frontLeft.set(ControlMode.Position, -1 * targetPosition);
 		frontRight.set(ControlMode.Position, targetPosition);
 	}
 	
-	public double getCurrentPosition() {
-		double frontLeftPosition = frontLeft.getSelectedSensorPosition(DEFAULT_TIMEOUT);
-		double frontRightPosition = frontRight.getSelectedSensorPosition(DEFAULT_TIMEOUT);
-		double averagePosition = (frontLeftPosition + -1 * frontRightPosition) / 2;
-		
-		return averagePosition;
+	public double getLeftPosition() {
+		return frontLeft.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+	}
+	
+	public double getRightPosition() {
+		return frontRight.getSelectedSensorPosition(DEFAULT_TIMEOUT);
+	}
+	
+	public double getAveragePosition() {
+		return (getLeftPosition() + getRightPosition()) / 2;
 	}
 	
 	public void zeroPosition() {
