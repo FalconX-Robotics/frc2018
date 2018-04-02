@@ -22,4 +22,6 @@ public class RobotMap {
 	
 	public static final int ROLLEY_GRABBER_LEFT_MOTOR = 5;
 	public static final int ROLLEY_GRABBER_RIGHT_MOTOR = 6;
+	
+	public static final int ELEVATOR_LIMITSWITCH_INPUT = 0;
 }

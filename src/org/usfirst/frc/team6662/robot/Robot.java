@@ -7,8 +7,11 @@
 
 package org.usfirst.frc.team6662.robot;
 
+import org.usfirst.frc.team6662.robot.AutoMeasures.Element;
+import org.usfirst.frc.team6662.robot.AutoMeasures.StartingPosition;
 import org.usfirst.frc.team6662.robot.commands.AutoScale;
 import org.usfirst.frc.team6662.robot.commands.AutoSwitch;
+import org.usfirst.frc.team6662.robot.commands.DriveForward;
 import org.usfirst.frc.team6662.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team6662.robot.subsystems.Elevator;
 import org.usfirst.frc.team6662.robot.subsystems.RolleyGrabber;
@@ -19,52 +22,93 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
+	public static final int LENGTH = 40; // inches
+	
 	public static Drivetrain drivetrain;
 	public static Elevator elevator;
 	public static RolleyGrabber rolleyGrabber;
 	
-	Command autoRoute;
-	SendableChooser<Command> autoChooser;
-	
 	public static OI oi;
 
-	String gameData = "";	
-	char allianceSwitch = gameData.charAt(0);
-	char allianceScale = gameData.charAt(1);
+	private Command driveForward;
+	private Command autoRun;
+	
+	private SendableChooser<StartingPosition> positionSelect;
+	private SendableChooser<Element> elementSelect;
 	
 	@Override
 	public void robotInit() {
 		drivetrain = new Drivetrain();
 		elevator = new Elevator(); 
 		rolleyGrabber = new RolleyGrabber();
-		
-		while (gameData != null && gameData.length() >= 2){
-			gameData = DriverStation.getInstance().getGameSpecificMessage();
-			allianceSwitch = gameData.charAt(0);
-			allianceScale = gameData.charAt(1);
-		}
 
 		oi = new OI();
 		
-		autoChooser = new SendableChooser<Command>();
+		driveForward = new DriveForward(AutoMeasures.TO_AUTOLINE);
+		
+		positionSelect = new SendableChooser<>();
+		positionSelect.addDefault("Switch from left", StartingPosition.L);
+		positionSelect.addObject("Switch from middle", StartingPosition.M);
+		positionSelect.addObject("Switch from right", StartingPosition.R);
+		
+		elementSelect = new SendableChooser<>();
+		elementSelect.addDefault("Switch", Element.SWITCH);
+		elementSelect.addObject("Scale", Element.SCALE);
+		elementSelect.addObject("Autoline", Element.AUTOLINE);
+		elementSelect.addObject("Same Side Switch and Scale", Element.COMBINE);
+		
+		SmartDashboard.putData("Position Select", positionSelect);
+		SmartDashboard.putData("Element Select", elementSelect);
 		
 		CameraServer.getInstance().startAutomaticCapture();
-		
-		autoChooser.addDefault("Position L to Switch", new AutoSwitch("Left",allianceSwitch));
-		autoChooser.addObject("Position M to Switch", new AutoSwitch("Middle",allianceSwitch));
-		autoChooser.addObject("Position R to Switch", new AutoSwitch("Right",allianceSwitch));
-		autoChooser.addObject("Position L to Scale", new AutoScale("Left",allianceScale));
-		autoChooser.addObject("Position M to Scale", new AutoScale("Middle",allianceScale));
-		autoChooser.addObject("Position R to Scale", new AutoScale("Right",allianceScale));
-		
-		autoRoute = autoChooser.getSelected();
 	}
 	
 	@Override
 	public void autonomousInit() {
-		autoRoute.start();
+		StartingPosition startingPosition = positionSelect.getSelected();
+		Element element = elementSelect.getSelected();
+		
+		String gameData = "";
+		char allianceSwitch = ' ';
+		char allianceScale = ' ';
+		
+		SmartDashboard.putString("Position", startingPosition.toString());
+		SmartDashboard.putString("Element", element.toString());
+	
+		while (gameData.length() != 3) {
+			gameData = DriverStation.getInstance().getGameSpecificMessage();
+		}
+		
+		allianceSwitch = gameData.charAt(0);
+		allianceScale = gameData.charAt(1);
+		
+		switch(element) {
+		case SWITCH:
+			autoRun = new AutoSwitch(startingPosition, allianceSwitch);
+			break;
+		case SCALE:
+			autoRun = new AutoScale(startingPosition, allianceScale);
+			break;
+		case COMBINE:
+			if (startingPosition.getChar() == allianceSwitch) {
+				autoRun = new AutoSwitch(startingPosition, allianceSwitch);
+			}
+			else if (startingPosition.getChar() == allianceScale) {
+				autoRun = new AutoScale(startingPosition, allianceScale);
+			}
+			else {
+				autoRun = driveForward;
+			}
+			break;
+		default:
+			autoRun = driveForward;
+			break;
+		}
+		
+		autoRun.start();
 	}
 	
 	@Override
