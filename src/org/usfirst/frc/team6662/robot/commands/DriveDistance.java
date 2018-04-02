@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveDistance extends Command {
 	private double targetDistance = 0;
 	private double targetPosition = 0;
-	protected boolean finished = false;
+	private double speed = -1;
 	
 	public DriveDistance(double targetDistance) {
 		super("Drive " + targetDistance + 
@@ -24,26 +24,25 @@ public class DriveDistance extends Command {
 	
 	@Override
 	protected void initialize() {
-		finished = false;
 		Robot.drivetrain.zeroPosition();
+		
+		if (targetDistance < 0) {
+			speed *= -1;
+		}
 	}
 	
 	@Override
 	protected void execute() {
-		Robot.drivetrain.tankDrive(0.8 , 0.8);
-		//System.out.println("Current: " + Robot.drivetrain.getCurrentPosition());
-		//System.out.println("Target: " + targetPosition);
-		finished = Math.abs(Robot.drivetrain.getCurrentPosition()) >= Math.abs(targetPosition);
-	}
-	
-	@Override
-	protected boolean isFinished() {
-		return finished;
+		Robot.drivetrain.tankDrive(speed, speed);
 	}
 	
 	@Override
 	protected void end() {
 		Robot.drivetrain.zeroPosition();
-		Robot.drivetrain.tankDrive(0.0, 0.0);
+	}
+	
+	@Override
+	protected boolean isFinished() {
+		return Math.abs(Robot.drivetrain.getAveragePosition()) >= Math.abs(targetPosition);
 	}
 }

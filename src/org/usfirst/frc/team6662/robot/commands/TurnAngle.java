@@ -13,9 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 
 public class TurnAngle extends Command {
-
 	private static final double SPEED = 1;
-	
 	private double angle = 0;
 	
 	public TurnAngle(double angle) {
@@ -32,7 +30,6 @@ public class TurnAngle extends Command {
 	
 	@Override
 	protected void execute() {
-	//	double ROTATION = Math.copySign(ROTATION, angle);
 		double SPEED = Math.copySign(TurnAngle.SPEED, angle);
 		
 		Robot.drivetrain.tankDrive(SPEED, -1 * SPEED);
